@@ -1,0 +1,20 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+        storage_engine: innodb
+        format_sql: true
+
+    show_sql: true
+    hibernate:
+      ddl-auto: create  #프로젝트 실행 시 자동으로 DDL을 생성할 것인지 설정(create, update, create-drop, validate)
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    hikari:
+      jdbc-url: jdbc:h2:mem:testdb;MODE=MYSQL
+      username: sa
