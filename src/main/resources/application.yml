@@ -1,1 +1,11 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+        storage_engine: innodb
 
+  profiles:
+    group:
+      local: local, local-db
+      real: real-db
