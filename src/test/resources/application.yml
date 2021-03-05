@@ -18,3 +18,11 @@ spring:
     hikari:
       jdbc-url: jdbc:h2:mem:testdb;MODE=MYSQL
       username: sa
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
