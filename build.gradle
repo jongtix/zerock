@@ -26,6 +26,9 @@ dependencies {
 	compile 'com.h2database:h2'	//h2 의존성 추가
 	compile 'org.mariadb.jdbc:mariadb-java-client'	//MariaDB 의존성 추가
 
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'	//Thymeleaf 의존성 추가
+	compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-java8time'	//Thymeleaf LocalDateTime, LocalDate 유틸 의존성 추가
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	compileOnly 'org.projectlombok:lombok'

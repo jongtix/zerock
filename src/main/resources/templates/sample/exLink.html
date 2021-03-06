@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <ul>
+        <!-- REST 방식의 URL로 아래와 같이 사용 가능 -->
+        <li th:each="dto : ${list}">
+            <a th:href="@{/sample/exView/{sno}(sno=${dto.sno})}">[[${dto}]]</a>
+        </li>
+    </ul>
+
+    <ul>
+        <!-- 키와 값의 형태로 parameter 추가 가능-->
+        <li th:each="dto : ${list}">
+            <a th:href="@{/sample/exView(sno=${dto.sno})}">[[${dto}]]</a>
+        </li>
+    </ul>
+
+    <ul>
+        <!-- '@{}'으로 구성된 링크 처리-->
+        <li th:each="dto : ${list}">
+            <a th:href="@{/sample/exView}">[[${dto}]]</a>
+        </li>
+    </ul>
+
+</body>
+</html>

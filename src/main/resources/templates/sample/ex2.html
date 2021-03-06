@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <ul>
+        <!-- Thymeleaf extras를 통한 Date 처리 -->
+        <li th:each="dto : ${list}">
+            [[${dto.sno}]] -- [[${#temporals.format(dto.regTime, 'yyyy/MM/dd')}]]
+        </li>
+    </ul>
+
+    <ul>
+        <!-- Thymeleaf의 기본 객체를 통해 5 자리 숫자 포맷 생성 -->
+        <li th:each="dto : ${list}">
+            [[${#numbers.formatInteger(dto.sno, 5)}]]
+        </li>
+    </ul>
+
+    <!-- th:block은 태그로 생성되지 않음 -->
+    <th:block th:each="dto : ${list}">
+        <li th:text="${dto.sno % 5 == 0} ? ${dto.sno} : ${'------------' + dto.first}"></li>
+    </th:block>
+
+    <style>
+        .target {
+            background-color: red;
+        }
+    </style>
+
+    <ul>
+        <!-- 삼항 연산자를 사용하여 특정 조건에 스타일 적용 -->
+        <!-- cf) 삼항 연산자의 경우 하나의 결과값만 사용 가능(조건 ? 결과1) -->
+        <li th:each="dto : ${list}" th:class="${dto.sno % 5 == 0} ? 'target'" th:text="${dto}"></li>
+    </ul>
+
+    <ul>
+        <!-- 삼항 연산자 사용 -->
+        <li th:each="dto : ${list}" th:text="${dto.sno % 5 == 0} ? ${'------------' + dto.sno} : ${dto.first}"></li>
+    </ul>
+
+    <ul>
+        <!-- 제어문의 경우 if ~ else가 아닌 if ~ unless로 처리-->
+        <li th:each="dto : ${list}">
+            <span th:if="${dto.sno % 5 == 0}" th:text="${'-------------------' + dto.sno}"></span>
+            <span th:unless="${dto.sno % 5 == 0}" th:text="${dto.first}"></span>
+        </li>
+    </ul>
+
+    <ul>
+        <!-- th:if로 제어문 처리 -->
+        <li th:each="dto, state : ${list}" th:if="${dto.sno % 5 == 0}">
+            [[${dto}]]
+        </li>
+    </ul>
+
+    <ul>
+        <li th:each="dto, state : ${list}">    <!-- Model로 전달된 list 데이터를 dto라는 변수로 만들어 사용 -->
+            [[${state.index}]] -- [[${dto}]]  <!-- 인라인 표현식으로 별도의 태그 속성으로 지정하지 않고 사용하고자 할 때 유용하게 쓸 수 있음 -->
+            <!-- 반복문에 부가적으로 사용할 수 있는 상태(state) 객체가 존재(순번, 인덱스 번호, 홀짝 등을 지정 가능) -->
+        </li>
+    </ul>
+</body>
+</html>
