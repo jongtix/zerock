@@ -8,4 +8,4 @@ spring:
   profiles:
     group:
       local: local, local-db
-      real: real-db
+      real: real, real-db

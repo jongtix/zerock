@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  jpa:
+    show_sql: true
+    hibernate:
+      ddl-auto: update  #프로젝트 실행 시 자동으로 DDL을 생성할 것인지 설정(create, update, create-drop, validate)
+
+    properties:
+      hibernate:
+        format_sql: true
+
+  thymeleaf:
+    cache: false  #Thymeleaf의 결과 캐시를 저장하지 않도록 변경
+                  # -> 개발할 때 Thymeleaf를 수정하고 브라우저를 새로고침하면 바로 결과를 반영하게 하기 위해서
+                  #출처: https://countryxide.tistory.com/8
