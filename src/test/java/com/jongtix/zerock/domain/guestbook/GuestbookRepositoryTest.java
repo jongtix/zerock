@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -38,7 +39,7 @@ class GuestbookRepositoryTest {
     @Test
     void insert_dummies_with_querydsl() {
         //given
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().minusSeconds(1);
         String title = "title";
         String content = "content";
         String writer = "writer";
@@ -158,12 +159,12 @@ class GuestbookRepositoryTest {
         BooleanExpression expressionContent = qGuestbook.content.contains(keyword);
         BooleanExpression expressionAll = expressionTitle.or(expressionContent);
         builder.and(expressionAll);
-        builder.and(qGuestbook.gno.gt(12L));
+        builder.and(qGuestbook.gno.gt(0L));
 
         Page<Guestbook> guestbooks = repository.findAll(builder, pageable);
 
         //then
-        assertThat(guestbooks.getTotalElements()).isEqualTo(3);
+        assertThat(guestbooks.getTotalElements()).isEqualTo(7L);
         assertThat(guestbooks.getContent().get(0).getTitle()).contains(keyword);
         assertThat(guestbooks.getContent().get(1).getTitle()).contains(keyword);
         assertThat(guestbooks.getContent().get(2).getTitle()).contains(keyword);
