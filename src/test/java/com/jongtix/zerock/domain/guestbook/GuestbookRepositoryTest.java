@@ -76,7 +76,6 @@ class GuestbookRepositoryTest {
                         .build()
         );
 
-        LocalDateTime beforeUpdate = LocalDateTime.now().minusSeconds(1);
         String expectedTitle = "expectedTitle";
         String expectedContent = "expectedContent";
 
@@ -90,8 +89,7 @@ class GuestbookRepositoryTest {
         assertThat(guestbooks.get(0).getTitle()).isEqualTo(expectedTitle);
         assertThat(guestbooks.get(0).getContent()).isEqualTo(expectedContent);
         assertThat(guestbooks.get(0).getWriter()).isEqualTo(writer);
-        assertThat(guestbooks.get(0).getRegDate()).isBefore(beforeUpdate);
-        assertThat(guestbooks.get(0).getModDate()).isAfter(beforeUpdate);
+        assertThat(guestbooks.get(0).getRegDate()).isBefore(guestbooks.get(0).getModDate());
     }
 
     @DisplayName("querydsl_단일_항목_검색_테스트")
