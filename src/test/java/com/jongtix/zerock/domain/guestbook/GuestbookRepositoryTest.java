@@ -76,7 +76,7 @@ class GuestbookRepositoryTest {
                         .build()
         );
 
-        LocalDateTime beforeUpdate = LocalDateTime.now();
+        LocalDateTime beforeUpdate = LocalDateTime.now().minusSeconds(1);
         String expectedTitle = "expectedTitle";
         String expectedContent = "expectedContent";
 
