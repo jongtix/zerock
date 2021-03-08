@@ -7,6 +7,5 @@ spring:
 
   profiles:
     group:
-      test: test, test-db
       local: local, local-db
       real: real-db
