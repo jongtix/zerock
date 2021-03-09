@@ -1,0 +1,30 @@
+version: "3.4"
+
+services:
+  spring_boot_zerock_1:
+    image: spring_boot_zerock
+#    expose:
+#      - "8080"
+    ports:
+      - 28081:8080
+    volumes:
+      - /home/ec2-user/zerock/:/app/
+
+#  spring_boot_zerock_2:
+#    image: spring_boot_zerock
+##    expose:
+##      - "8080"
+#    ports:
+#      - 28082:8080
+#    volumes:
+#      - /home/ec2-user/zerock/:/app/
+
+  nginx_zerock:
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - /home/ec2-user/zerock/nginx/:/etc/nginx/
+    links:
+      - spring_boot_zerock_1
+      - spring_boot_zerock_2
