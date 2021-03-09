@@ -27,4 +27,4 @@ services:
       - /home/ec2-user/zerock/nginx/:/etc/nginx/
     links:
       - spring_boot_zerock_1
-      - spring_boot_zerock_2
+#      - spring_boot_zerock_2
