@@ -23,6 +23,10 @@ public class PageRequestDto {
 
     public Pageable getPageable(Sort sort) {
         return PageRequest.of(this.page - 1, this.size, sort);
+        /**
+         * Spring Data JPA 이용 시 @PageableDefault라는 어노테이션으로 Pageable 타입을 이용하거나,
+         * application.yml(properties)에 0이 아닌 1부터 페이지 번호를 받을 수 있게 처리할 수 있음
+         */
     }
 
 }

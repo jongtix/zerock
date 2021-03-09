@@ -1,5 +1,6 @@
 package com.jongtix.zerock.controller;
 
+import com.jongtix.zerock.dto.response.PageResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,12 +46,14 @@ class GuestbookControllerTest {
         ResultActions result = mvc.perform(
                 get(url)
                 .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
         );
 
         //then
         result.andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(view().name("/guestbook/list"));
+                .andExpect(status().is3xxRedirection())
+//                .andExpect(view().name("/guestbook/list"));
+                .andExpect(redirectedUrl("/guestbook/list"));
     }
 
     @DisplayName("guestbook_리스트_페이지_호출")
@@ -63,12 +66,14 @@ class GuestbookControllerTest {
         ResultActions result = mvc.perform(
                 get(url)
                 .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
         );
 
         //then
         result.andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(view().name("/guestbook/list"));
+//                .andExpect(view().name("/guestbook/list"));
+                .andExpect(model().attributeExists("result"));
     }
 
 }
