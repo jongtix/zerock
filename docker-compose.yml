@@ -22,7 +22,7 @@ services:
   nginx_zerock:
     image: nginx
     ports:
-      - 80:80
+      - 48090:80
     volumes:
       - /home/ec2-user/zerock/nginx/:/etc/nginx/
     links:
