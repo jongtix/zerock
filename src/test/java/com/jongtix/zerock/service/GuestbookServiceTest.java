@@ -83,4 +83,17 @@ class GuestbookServiceTest {
         assertThat(pageResponseDto.getTotalPage()).isEqualTo(15);
     }
 
+    @DisplayName("엔티티에서_DTO_전환_시_null_처리_테스트")
+    @Test
+    void entityToDto_with_null_test() {
+        GuestbookDto dto = null;
+        try {
+            //when
+            dto = guestbookService.entityToDto(null);
+        } catch (NullPointerException npe) {
+            assertThat(dto).isNull();
+        }
+
+    }
+
 }

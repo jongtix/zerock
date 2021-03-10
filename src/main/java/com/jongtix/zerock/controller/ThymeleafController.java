@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
 public class ThymeleafController {
 
     @GetMapping("/ex1")
-    public void ex1() { //Thymeleaf는 기본적으로 resources/templates/ 하위 경로의 html 파일 탐색
+    public void ex1() { //Thymeleaf는 기본적으로 resources/templates/ 하위 경로의 URI.html 파일 탐색
 
         log.info("ex1..................");
 

@@ -12,6 +12,4 @@ spring:
         format_sql: true
 
   thymeleaf:
-    cache: false  #Thymeleaf의 결과 캐시를 저장하지 않도록 변경
-                  # -> 개발할 때 Thymeleaf를 수정하고 브라우저를 새로고침하면 바로 결과를 반영하게 하기 위해서
-                  #출처: https://countryxide.tistory.com/8
+    cache: true

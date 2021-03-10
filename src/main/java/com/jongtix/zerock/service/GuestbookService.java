@@ -11,6 +11,12 @@ public interface GuestbookService {
 
     PageResponseDto<GuestbookDto, Guestbook> getList(PageRequestDto requestDto);
 
+    GuestbookDto read(Long gno);
+
+    void remove(Long gno);
+
+    void modify(GuestbookDto dto) throws Exception;
+
     default Guestbook dtoToEntity(GuestbookDto guestbookDto) {   //인터페이스에 구현체 사용 예, default 선언 필요
         return Guestbook.builder()
                 .gno(guestbookDto.getGno())

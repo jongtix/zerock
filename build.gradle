@@ -39,7 +39,7 @@ dependencies {
 	annotationProcessor("jakarta.annotation:jakarta.annotation-api") // java.lang.NoClassDefFoundError(javax.annotation.Generated) 발생 대응
 	//Querydsl 추가 -end
 
-	compile 'org.thymeleaf:thymeleaf'
+//	compile 'org.thymeleaf:thymeleaf'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
