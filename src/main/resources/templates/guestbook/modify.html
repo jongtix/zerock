@@ -10,6 +10,8 @@
         <form accept-charset="/guestbook/modify" method="post">
 
             <input type="hidden" name="page" th:value="${requestDto.page}">
+            <input type="hidden" name="type" th:value="${requestDto.type}">
+            <input type="hidden" name="keyword" th:value="${requestDto.keyword}">
 
             <div class="form-group">
                 <label>Gno</label>
@@ -79,10 +81,20 @@
 
     $(".listBtn").click(function() {
 
-        var pageInfo = $("input[name='page']");
+        //AS-IS
+        //var pageInfo = $("input[name='page']");
+        //TO-BE
+        var page = $("input[name='page']");
+        var type = $("input[name='type']");
+        var keyword = $("input[name='keyword']");
 
         actionForm.empty(); //form 태그의 모든 내용을 지우고
+        //AS-IS
         actionForm.append(pageInfo);    //목록 페이지 이동에 필요한 내용만 다시 추가
+        //TO-BE
+        actionForm.append(page);
+        actionForm.append(type);
+        actionForm.append(keyword);
 
         actionForm
             .attr("action", "/guestbook/list")

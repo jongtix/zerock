@@ -31,10 +31,11 @@ class GuestbookController {
      * ex) 화면에서 page와 size라는 파라미터를 전달하면 PageRequestDto 객체로 자동으로 수집 됨
      */
     @GetMapping("/list")
-    public void list(PageRequestDto dto, Model model) {
+    public void list(PageRequestDto pageRequestDto, Model model) {
         log.info("list..............");
+        log.info("dto.........." + pageRequestDto);
 
-        model.addAttribute("result", guestbookService.getList(dto));
+        model.addAttribute("result", guestbookService.getList(pageRequestDto));
     }
 
 //    @GetMapping({ "/", "/list" })
@@ -65,6 +66,7 @@ class GuestbookController {
     public void read(Long gno, @ModelAttribute("requestDto") PageRequestDto requestDto, Model model) {
 
         log.info("gno: " + gno);
+        log.info("requestDto: " + requestDto);
 
         GuestbookDto dto = guestbookService.read(gno);
 
@@ -100,6 +102,8 @@ class GuestbookController {
         guestbookService.modify(dto);
 
         redirectAttributes.addAttribute("page", requestDto.getPage());
+        redirectAttributes.addAttribute("type", requestDto.getType());
+        redirectAttributes.addAttribute("keyword", requestDto.getKeyword());
         redirectAttributes.addAttribute("gno", dto.getGno());
 
         return "redirect:/guestbook/read";

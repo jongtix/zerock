@@ -2,9 +2,12 @@ package com.jongtix.zerock.service;
 
 import com.jongtix.zerock.domain.guestbook.Guestbook;
 import com.jongtix.zerock.domain.guestbook.GuestbookRepository;
+import com.jongtix.zerock.domain.guestbook.QGuestbook;
 import com.jongtix.zerock.dto.GuestbookDto;
 import com.jongtix.zerock.dto.request.PageRequestDto;
 import com.jongtix.zerock.dto.response.PageResponseDto;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +46,11 @@ public class GuestbookServiceImpl implements GuestbookService {
 
         Pageable pageable = requestDto.getPageable(Sort.by("gno").descending());
 
-        Page<Guestbook> result = guestbookRepository.findAll(pageable);
+        BooleanBuilder booleanBuilder = getSearch(requestDto);  //검색 조건 처리 추가
+
+//        Page<Guestbook> result = guestbookRepository.findAll(pageable);   //AS-IS
+        Page<Guestbook> result = guestbookRepository.findAll(booleanBuilder, pageable); //TO-BE
+                                                                                        //Querydsl 사용
 
         Function<Guestbook, GuestbookDto> fn = (entity -> entityToDto(entity));
 
@@ -87,5 +94,45 @@ public class GuestbookServiceImpl implements GuestbookService {
 //        Guestbook guestbook = guestbookRepository.findById(dto.getGno()).orElseThrow(() -> new Exception());
 //
 //        guestbookRepository.save(dtoToEntity(dto));
+    }
+
+    private BooleanBuilder getSearch(PageRequestDto requestDto) {   //PageRequestDto를 파라미터로 받아 검색 조건이 있는 경우에는 conditionBuilder 변수를 생성해서 각 검색 조건을 'or'로 연결해서 처리
+
+        String type = requestDto.getType();
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+        QGuestbook qGuestbook = QGuestbook.guestbook;
+
+        BooleanExpression expression = qGuestbook.gno.gt(0L);   //gno > 0 조건 추가
+
+        booleanBuilder.and(expression);
+
+        String keyword = requestDto.getKeyword();
+
+        if (type == null || type.trim().length() == 0) {    //검색 조건이 없는 경우
+            return booleanBuilder;
+        }
+
+        //검색 조건 추가
+        BooleanBuilder conditionBuilder = new BooleanBuilder();
+
+        if (type.contains("t")) {
+            conditionBuilder.or(qGuestbook.title.contains(keyword));
+        }
+
+        if (type.contains("c")) {
+            conditionBuilder.or(qGuestbook.content.contains(keyword));
+        }
+
+        if (type.contains("w")) {
+            conditionBuilder.or(qGuestbook.writer.contains(keyword));
+        }
+
+        //모든 조건 통합
+        booleanBuilder.and(conditionBuilder);
+
+        return booleanBuilder;
+
     }
 }

@@ -62,7 +62,33 @@ class GuestbookServiceTest {
         Long gno = guestbookService.register(guestbookDto);
     }
 
-    @DisplayName("리스트_가져오기_테스트")
+    @DisplayName("조건이_있을_경우_리스트_가져오기_테스트")
+    @Test
+    void test_list_with_condition() {
+        //given
+        String type = "t";
+        String keyword = "1";
+
+        PageRequestDto pageRequestDto = PageRequestDto.builder()
+                .page(1)
+                .size(10)
+                .type(type)
+                .keyword(keyword)
+                .build();
+
+        //when
+        PageResponseDto pageResponseDto = guestbookService.getList(pageRequestDto);
+
+        //then
+        assertThat(pageResponseDto.getDtoList().size()).isEqualTo(10);
+        assertThat(((GuestbookDto) pageResponseDto.getDtoList().get(0)).getTitle()).contains(keyword);
+        assertThat(((GuestbookDto) pageResponseDto.getDtoList().get(9)).getTitle()).contains(keyword);
+        assertThat(pageResponseDto.isPrev()).isEqualTo(false);
+        assertThat(pageResponseDto.isNext()).isEqualTo(false);
+        assertThat(pageResponseDto.getTotalPage()).isEqualTo(7);
+    }
+
+    @DisplayName("조건이_없을_경우_리스트_가져오기_테스트")
     @Test
     void test_list() {
         //given
