@@ -5,6 +5,7 @@ import com.jongtix.zerock.domain.guestbook.GuestbookRepository;
 import com.jongtix.zerock.dto.GuestbookDto;
 import com.jongtix.zerock.dto.request.PageRequestDto;
 import com.jongtix.zerock.dto.response.PageResponseDto;
+import com.jongtix.zerock.service.guestbook.GuestbookService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -2,7 +2,7 @@ package com.jongtix.zerock.controller;
 
 import com.jongtix.zerock.dto.GuestbookDto;
 import com.jongtix.zerock.dto.request.PageRequestDto;
-import com.jongtix.zerock.service.GuestbookService;
+import com.jongtix.zerock.service.guestbook.GuestbookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;

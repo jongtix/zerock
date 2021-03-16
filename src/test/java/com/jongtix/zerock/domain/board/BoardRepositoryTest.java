@@ -6,6 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
@@ -210,6 +214,130 @@ class BoardRepositoryTest {
         assertThat(((Board) result.get(1)[0]).getContent()).isEqualTo(content);
         assertThat(((Reply) result.get(1)[1]).getText()).isEqualTo(text2);
         assertThat(((Reply) result.get(1)[1]).getReplyer()).isEqualTo(replyer2);
+    }
+
+    @DisplayName("JPQL을_활용하여_게시판_조회3")
+    @Test
+    void select_board_with_jpql3() {
+        //given
+        String email = "email";
+        String password = "password";
+        String name = "name";
+
+        Member member = memberRepository.save(
+                Member.builder()
+                        .email(email)
+                        .password(password)
+                        .name(name)
+                        .build()
+        );
+
+        String title = "title";
+        String content = "content";
+        Board board = boardRepository.save(
+                Board.builder()
+                        .title(title)
+                        .content(content)
+                        .writer(member)
+                        .build()
+        );
+
+        String text1 = "text1";
+        String replyer1 = "replyer1";
+        replyRepository.save(
+                Reply.builder()
+                        .text(text1)
+                        .replyer(replyer1)
+                        .board(board)
+                        .build()
+        );
+
+        String text2 = "text2";
+        String replyer2 = "replyer2";
+        replyRepository.save(
+                Reply.builder()
+                        .text(text2)
+                        .replyer(replyer2)
+                        .board(board)
+                        .build()
+        );
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
+
+        //when
+        Page<Object[]> result = boardRepository.getBoardWithReplyCount(pageable);
+
+        //then
+        result.get().forEach(
+                row -> {
+                    assertThat(((Board) row[0]).getTitle()).isEqualTo(title);
+                    assertThat(((Board) row[0]).getContent()).isEqualTo(content);
+                    assertThat(((Member) row[1]).getEmail()).isEqualTo(email);
+                    assertThat(((Member) row[1]).getPassword()).isEqualTo(password);
+                    assertThat(((Member) row[1]).getName()).isEqualTo(name);
+                    assertThat(row[2]).isEqualTo(2L);
+                }
+        );
+    }
+
+    @DisplayName("JPQL을_활용하여_게시판_조회4")
+    @Test
+    void select_board_with_jpql4() {
+        //given
+        String email = "email";
+        String password = "password";
+        String name = "name";
+
+        Member member = memberRepository.save(
+                Member.builder()
+                        .email(email)
+                        .password(password)
+                        .name(name)
+                        .build()
+        );
+
+        String title = "title";
+        String content = "content";
+        Board board = boardRepository.save(
+                Board.builder()
+                        .title(title)
+                        .content(content)
+                        .writer(member)
+                        .build()
+        );
+
+        String text1 = "text1";
+        String replyer1 = "replyer1";
+        replyRepository.save(
+                Reply.builder()
+                        .text(text1)
+                        .replyer(replyer1)
+                        .board(board)
+                        .build()
+        );
+
+        String text2 = "text2";
+        String replyer2 = "replyer2";
+        replyRepository.save(
+                Reply.builder()
+                        .text(text2)
+                        .replyer(replyer2)
+                        .board(board)
+                        .build()
+        );
+
+        Long bno = board.getBno();
+
+        //when
+        Object[] result = (Object[]) boardRepository.getBoardByBno(bno);
+
+        //then
+        assertThat(((Board) result[0]).getTitle()).isEqualTo(title);
+        assertThat(((Board) result[0]).getContent()).isEqualTo(content);
+        assertThat(((Member) result[1]).getEmail()).isEqualTo(email);
+        assertThat(((Member) result[1]).getPassword()).isEqualTo(password);
+        assertThat(((Member) result[1]).getName()).isEqualTo(name);
+        assertThat(result[2]).isEqualTo(2L);
     }
 
 }

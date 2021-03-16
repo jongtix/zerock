@@ -1,4 +1,4 @@
-package com.jongtix.zerock.service;
+package com.jongtix.zerock.service.guestbook;
 
 import com.jongtix.zerock.domain.guestbook.Guestbook;
 import com.jongtix.zerock.dto.GuestbookDto;
