@@ -55,6 +55,9 @@ class BoardServiceImplTest {
         //object references an unsaved transient instance - save the transient instance before flushing : com.jongtix.zerock.domain.board.Board.writer -> com.jongtix.zerock.domain.board.Member
         //부모 객체에서 자식 객체를 바인딩하여 한번에 저장하려는데 자식 객체가 아직 데이터 베이스에 저장되지 않았기 때문에 발생
         //출처: https://m.blog.naver.com/PostView.nhn?blogId=rorean&logNo=221479709787&proxyReferer=https:%2F%2Fwww.google.com%2F
+        //JPA의 persist를 호출할 때, 해당 객체와 연관된 모든 객체도 영속 상태여야 합니다.
+        //(object references an unsaved transient instance -> 이 오류메시지가 그 뜻입니다)
+        //출처: https://www.inflearn.com/questions/27526
         memberRepository.save(
                 Member.builder()
                         .email(email)
