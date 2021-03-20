@@ -49,7 +49,8 @@ class GuestbookControllerTest {
     @Test
     void call_context_root_page() throws Exception {
         //given
-        String url = "/guestbook/";
+//        String url = "/guestbook/";
+        String url = "/";
 
         //when
         ResultActions result = mvc.perform(
@@ -61,8 +62,8 @@ class GuestbookControllerTest {
         //then
         result.andDo(print())
                 .andExpect(status().is3xxRedirection())
-//                .andExpect(view().name("/guestbook/list"));
-                .andExpect(redirectedUrl("/guestbook/list"));
+                .andExpect(view().name("redirect:/guestbook/list"));
+//                .andExpect(redirectedUrl("/guestbook/list"));
     }
 
     @DisplayName("guestbook_리스트_페이지_호출")

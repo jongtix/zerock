@@ -258,7 +258,7 @@ class BoardControllerTest {
         resultActions.andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(flash().attributeExists("msg"))
-                .andExpect(redirectedUrl("/board/list"));
+                .andExpect(view().name("redirect:/board/list"));
     }
 
     @DisplayName("board_수정_기능")

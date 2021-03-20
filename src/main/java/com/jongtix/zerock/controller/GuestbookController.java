@@ -101,12 +101,12 @@ class GuestbookController {
 
         Long gno = guestbookService.modify(dto);
 
+        redirectAttributes.addAttribute("gno", dto.getGno());
         redirectAttributes.addAttribute("page", requestDto.getPage());
         redirectAttributes.addAttribute("type", requestDto.getType());
         redirectAttributes.addAttribute("keyword", requestDto.getKeyword());
-        redirectAttributes.addAttribute("gno", dto.getGno());
 
-        return "redirect:/guestbook/read?gno=" + gno;
+        return "redirect:/guestbook/read";
 
     }
 
