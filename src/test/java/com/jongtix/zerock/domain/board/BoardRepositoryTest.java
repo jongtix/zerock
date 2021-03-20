@@ -405,23 +405,22 @@ class BoardRepositoryTest {
                 )
         );
         IntStream.rangeClosed(1, 20).forEach(
-                i -> boardRepository.save(
-                        Board.builder()
-                                .title("title" + i)
-                                .content("content" + i)
-                                .writer(Member.builder()
-                                        .email("email" + i)
-                                        .build()
-                                )
-                                .build()
-                )
-        );
-        IntStream.rangeClosed(1, 20).forEach(
                 i -> replyRepository.save(
                         Reply.builder()
                                 .text("text" + i)
                                 .replyer("replyer" + i)
-                                .board(boardRepository.findById((long) i).orElseGet(Board::new))
+                                .board(boardRepository.findById(
+                                        boardRepository.save(
+                                                Board.builder()
+                                                        .title("title" + i)
+                                                        .content("content" + i)
+                                                        .writer(Member.builder()
+                                                                .email("email" + i)
+                                                                .build()
+                                                        )
+                                                        .build()
+                                        ).getBno()
+                                ).orElseGet(Board::new))
                                 .build()
                 )
         );
