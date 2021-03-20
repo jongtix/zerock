@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -74,25 +75,31 @@ public class GuestbookServiceImpl implements GuestbookService {
 
     }
 
+    @Transactional
     @Override
-    public void modify(GuestbookDto dto) throws Exception {
+    public Long modify(GuestbookDto dto) throws Exception {
 
-        Optional<Guestbook> result = guestbookRepository.findById(dto.getGno());
-
-        if (result.isPresent()) {
-
-            Guestbook entity = result.get();
-
-            entity.changeTitle(dto.getTitle());
-
-            entity.changeContent(dto.getContent());
-
-            guestbookRepository.save(entity);
-        }
-
-//        Guestbook guestbook = guestbookRepository.findById(dto.getGno()).orElseThrow(() -> new Exception());
+//        AS-IS
+//        Optional<Guestbook> result = guestbookRepository.findById(dto.getGno());
 //
-//        guestbookRepository.save(dtoToEntity(dto));
+//        if (result.isPresent()) {
+//
+//            Guestbook entity = result.get();
+//
+//            entity.changeTitle(dto.getTitle());
+//
+//            entity.changeContent(dto.getContent());
+//
+//            guestbookRepository.save(entity);
+//        }
+
+        //TO-BE
+        Guestbook guestbook = guestbookRepository.findById(dto.getGno()).orElseThrow(() -> new IllegalArgumentException("해당하는 게시글이 없습니다. gno: " + dto.getGno()));
+
+        guestbook.changeTitle(dto.getTitle());
+        guestbook.changeContent(dto.getContent());
+
+        return guestbook.getGno();
     }
 
     private BooleanBuilder getSearch(PageRequestDto requestDto) {   //PageRequestDto를 파라미터로 받아 검색 조건이 있는 경우에는 conditionBuilder 변수를 생성해서 각 검색 조건을 'or'로 연결해서 처리

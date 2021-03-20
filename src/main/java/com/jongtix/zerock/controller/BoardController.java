@@ -60,12 +60,15 @@ public class BoardController {
     }
 
     @DeleteMapping("/board/remove")
-    public String remove(Long bno, RedirectAttributes redirectAttributes) {
+    public String remove(@ModelAttribute("requestDto") PageRequestDto pageRequestDto, Long bno, RedirectAttributes redirectAttributes) {
         log.info("bno: " + bno);
 
         boardService.removeWithReplies(bno);
 
         redirectAttributes.addFlashAttribute("msg", bno);
+        redirectAttributes.addAttribute("page", pageRequestDto.getPage());
+        redirectAttributes.addAttribute("type", pageRequestDto.getType());
+        redirectAttributes.addAttribute("keyword", pageRequestDto.getKeyword());
 
         return "redirect:/board/list";
     }
@@ -76,8 +79,9 @@ public class BoardController {
         log.info("boardRequestDto: " + boardRequestDto);
         log.info("pageRequestDto: " + pageRequestDto);
 
-        boardService.modify(boardRequestDto);
+        Long bno = boardService.modify(boardRequestDto);
 
+        redirectAttributes.addAttribute("bno", bno);
         redirectAttributes.addAttribute("page", pageRequestDto.getPage());
         redirectAttributes.addAttribute("type", pageRequestDto.getType());
         redirectAttributes.addAttribute("keyword", pageRequestDto.getKeyword());

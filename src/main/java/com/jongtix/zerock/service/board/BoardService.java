@@ -17,19 +17,24 @@ public interface BoardService {
 
     void removeWithReplies(Long bno);   //삭제 기능
 
-    void modify(BoardRequestDto requestDto);
+    Long modify(BoardRequestDto requestDto);
 
     default Board dtoToEntity(BoardRequestDto requestDto) {
-        Member member = Member.builder()
-                .email(requestDto.getWriterEmail())
-                .name(requestDto.getWriterName())
-                .build();
+//        Member member = Member.builder()
+//                .email(requestDto.getWriterEmail())
+//                .name(requestDto.getWriterName())
+//                .build();
 
         return Board.builder()
                 .bno(requestDto.getBno())
                 .title(requestDto.getTitle())
                 .content(requestDto.getContent())
-                .writer(member)
+                .writer(
+                        Member.builder()
+                                .email(requestDto.getWriterEmail())
+                                .name(requestDto.getWriterName())
+                                .build()
+                )
                 .build();
     };
 

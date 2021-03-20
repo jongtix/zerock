@@ -51,7 +51,17 @@ public class BoardServiceImpl implements BoardService {
 
         Pageable pageable = requestDto.getPageable(Sort.by("bno"));
 
-        Page<Object[]> result = boardRepository.getBoardWithReplyCount(pageable);
+        //AS-IS
+        //QuerydslRepositorySupport 적용 전
+//        Page<Object[]> result = boardRepository.getBoardWithReplyCount(pageable);
+
+        //TO-BE
+        //QuerydslRepositorySupport 적용 후
+        Page<Object[]> result = boardRepository.searchPage(
+                requestDto.getType(),
+                requestDto.getKeyword(),
+                requestDto.getPageable(Sort.by("bno").descending())
+        );
 
         Function<Object[], BoardResponseDto> function = (entity -> entityToDto((Board) entity[0], (Member) entity[1], (Long) entity[2]));
 
@@ -102,7 +112,7 @@ public class BoardServiceImpl implements BoardService {
 //    TO-BE
     @Transactional
     @Override
-    public void modify(BoardRequestDto requestDto) {
+    public Long modify(BoardRequestDto requestDto) {
 
         Long bno = requestDto.getBno();
 
@@ -112,6 +122,7 @@ public class BoardServiceImpl implements BoardService {
         board.changeTitle(requestDto.getTitle());
         board.changeContent(requestDto.getContent());
 
+        return board.getBno();
     }
 
 }

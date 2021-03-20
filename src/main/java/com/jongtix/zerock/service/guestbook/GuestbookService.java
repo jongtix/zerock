@@ -15,7 +15,7 @@ public interface GuestbookService {
 
     void remove(Long gno);
 
-    void modify(GuestbookDto dto) throws Exception;
+    Long modify(GuestbookDto dto) throws Exception;
 
     default Guestbook dtoToEntity(GuestbookDto guestbookDto) {   //인터페이스에 구현체 사용 예, default 선언 필요
         return Guestbook.builder()

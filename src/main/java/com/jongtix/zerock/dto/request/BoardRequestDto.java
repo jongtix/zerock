@@ -21,10 +21,4 @@ public class BoardRequestDto {
 
     private String writerName;  //작성자 이름
 
-    private LocalDateTime regDate;
-
-    private LocalDateTime modDate;
-
-    private int replyCount; //해당 게시글의 댓글 수
-
 }

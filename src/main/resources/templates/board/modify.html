@@ -12,6 +12,7 @@
             <input type="hidden" name="page" th:value="${requestDto.page}">
             <input type="hidden" name="type" th:value="${requestDto.type}">
             <input type="hidden" name="keyword" th:value="${requestDto.keyword}">
+            <input type="hidden" name="_method" id="_method" th:value="PATCH">
 
             <div class="form-group">
                 <label>Bno</label>
@@ -54,12 +55,18 @@
 <script th:inline="javascript">
 
     var actionForm = $("form");
+    var method = $("#_method");
 
     $(".removeBtn").click(function() {
+
+        if (!confirm("삭제하시겠습니까?")) {
+            return ;
+        }
 
         actionForm
             .attr("action", "/board/remove")
             .attr("method", "post");
+        method.val("DELETE");
 
         actionForm.submit();
 
@@ -74,6 +81,7 @@
         actionForm
             .attr("action", "/board/modify")
             .attr("method", "post");
+        method.val("PATCH");
 
         actionForm.submit();
 
@@ -90,7 +98,7 @@
 
         actionForm.empty(); //form 태그의 모든 내용을 지우고
         //AS-IS
-        actionForm.append(pageInfo);    //목록 페이지 이동에 필요한 내용만 다시 추가
+        //actionForm.append(pageInfo);    //목록 페이지 이동에 필요한 내용만 다시 추가
         //TO-BE
         actionForm.append(page);
         actionForm.append(type);

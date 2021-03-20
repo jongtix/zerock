@@ -10,6 +10,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -116,6 +117,62 @@ class ReplyRepositoryTest {
         assertThat(reply.getBoard().getWriter().getEmail()).isEqualTo(email);
         assertThat(reply.getBoard().getWriter().getPassword()).isEqualTo(password);
         assertThat(reply.getBoard().getWriter().getName()).isEqualTo(name);
+    }
+
+    @DisplayName("게시물로_댓글_목록_가져오기_테스트")
+    @Test
+    void getRepliesByBoardOrderByRno() {
+        //given
+        String email = "email";
+        String password = "password";
+        String name = "name";
+
+        Member member = memberRepository.save(
+                Member.builder()
+                        .email(email)
+                        .password(password)
+                        .name(name)
+                        .build()
+        );
+
+        String title = "title";
+        String content = "content";
+        Board board = boardRepository.save(
+                Board.builder()
+                        .title(title)
+                        .content(content)
+                        .writer(member)
+                        .build()
+        );
+
+        String text1 = "text1";
+        String replyer1 = "replyer1";
+        replyRepository.save(
+                Reply.builder()
+                        .text(text1)
+                        .replyer(replyer1)
+                        .board(board)
+                        .build()
+        );
+
+        String text2 = "text2";
+        String replyer2 = "replyer2";
+        replyRepository.save(
+                Reply.builder()
+                        .text(text2)
+                        .replyer(replyer2)
+                        .board(board)
+                        .build()
+        );
+
+        //when
+        List<Reply> replies = replyRepository.getRepliesByBoardOrderByRno(board);
+
+        //then
+        assertThat(replies.get(0).getText()).isEqualTo(text1);
+        assertThat(replies.get(0).getReplyer()).isEqualTo(replyer1);
+        assertThat(replies.get(1).getText()).isEqualTo(text2);
+        assertThat(replies.get(1).getReplyer()).isEqualTo(replyer2);
     }
 
 }

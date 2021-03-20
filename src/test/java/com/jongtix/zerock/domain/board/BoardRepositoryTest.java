@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -338,6 +339,119 @@ class BoardRepositoryTest {
         assertThat(((Member) result[1]).getPassword()).isEqualTo(password);
         assertThat(((Member) result[1]).getName()).isEqualTo(name);
         assertThat(result[2]).isEqualTo(2L);
+    }
+
+    @DisplayName("search1_테스트")
+    @Test
+    void search1() {
+        //given
+        String email = "email";
+        String password = "password";
+        String name = "name";
+
+        Member member = memberRepository.save(
+                Member.builder()
+                        .email(email)
+                        .password(password)
+                        .name(name)
+                        .build()
+        );
+
+        String title = "title";
+        String content = "content";
+        Board board = boardRepository.save(
+                Board.builder()
+                        .title(title)
+                        .content(content)
+                        .writer(member)
+                        .build()
+        );
+
+        String text1 = "text1";
+        String replyer1 = "replyer1";
+        replyRepository.save(
+                Reply.builder()
+                        .text(text1)
+                        .replyer(replyer1)
+                        .board(board)
+                        .build()
+        );
+
+        String text2 = "text2";
+        String replyer2 = "replyer2";
+        replyRepository.save(
+                Reply.builder()
+                        .text(text2)
+                        .replyer(replyer2)
+                        .board(board)
+                        .build()
+        );
+
+        //when
+        boardRepository.search1();
+    }
+
+    @DisplayName("searchPage_테스트")
+    @Test
+    void searchPage() {
+        //given
+        IntStream.rangeClosed(1, 20).forEach(
+                i -> memberRepository.save(
+                        Member.builder()
+                                .email("email" + i)
+                                .password("password" + i)
+                                .name("name" + i)
+                                .build()
+                )
+        );
+        IntStream.rangeClosed(1, 20).forEach(
+                i -> boardRepository.save(
+                        Board.builder()
+                                .title("title" + i)
+                                .content("content" + i)
+                                .writer(Member.builder()
+                                        .email("email" + i)
+                                        .build()
+                                )
+                                .build()
+                )
+        );
+        IntStream.rangeClosed(1, 20).forEach(
+                i -> replyRepository.save(
+                        Reply.builder()
+                                .text("text" + i)
+                                .replyer("replyer" + i)
+                                .board(boardRepository.findById((long) i).orElseGet(Board::new))
+                                .build()
+                )
+        );
+
+        String type = "t";
+        String keyword = "1";
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending().and(Sort.by("title").ascending()));
+
+        //when
+        Page<Object[]> result = boardRepository.searchPage(type, keyword, pageable);
+
+        //then
+        List<Object[]> list = result.getContent();
+        assertThat(list.get(0)[2]).isEqualTo(1L);
+        assertThat(((Board) (list.get(0)[0])).getTitle()).isEqualTo("title" + 19);
+        assertThat(((Board) (list.get(0)[0])).getContent()).isEqualTo("content" + 19);
+        assertThat(((Member) (list.get(0)[1])).getEmail()).isEqualTo("email" + 19);
+        assertThat(((Member) (list.get(0)[1])).getPassword()).isEqualTo("password" + 19);
+        assertThat(((Member) (list.get(0)[1])).getName()).isEqualTo("name" + 19);
+
+        assertThat(((Board) (list.get(9)[0])).getTitle()).isEqualTo("title" + 10);
+        assertThat(((Board) (list.get(9)[0])).getContent()).isEqualTo("content" + 10);
+        assertThat(((Member) (list.get(9)[1])).getEmail()).isEqualTo("email" + 10);
+        assertThat(((Member) (list.get(9)[1])).getPassword()).isEqualTo("password" + 10);
+        assertThat(((Member) (list.get(9)[1])).getName()).isEqualTo("name" + 10);
+
+        assertThat(result.getTotalElements()).isEqualTo(11L);
+        assertThat(result.getTotalPages()).isEqualTo(2);
+        assertThat(result.getNumber()).isEqualTo(0);
+        assertThat(result.getNumberOfElements()).isEqualTo(10);
     }
 
 }

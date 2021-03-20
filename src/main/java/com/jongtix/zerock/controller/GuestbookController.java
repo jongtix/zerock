@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/guestbook")
+//@RequestMapping("/guestbook")
 @Log4j2
 @RequiredArgsConstructor
 class GuestbookController {
@@ -30,7 +30,7 @@ class GuestbookController {
      * Spring MVC는 파라미터를 자동으로 수집해주는 기능이 있음
      * ex) 화면에서 page와 size라는 파라미터를 전달하면 PageRequestDto 객체로 자동으로 수집 됨
      */
-    @GetMapping("/list")
+    @GetMapping("/guestbook/list")
     public void list(PageRequestDto pageRequestDto, Model model) {
         log.info("list..............");
         log.info("dto.........." + pageRequestDto);
@@ -46,12 +46,12 @@ class GuestbookController {
 //        return "/guestbook/list";
 //    }
 
-    @GetMapping("/register")
+    @GetMapping("/guestbook/register")
     public void register() {    //등록 화면 보여주기
         log.info("register...........");
     }
 
-    @PostMapping("/register")
+    @PostMapping("/guestbook/register")
     public String registerPost(GuestbookDto dto, RedirectAttributes redirectAttributes) {   //처리 후 목록 페이지로 이동
         log.info("dto......" + dto);
 
@@ -62,7 +62,7 @@ class GuestbookController {
         return "redirect:/guestbook/list";
     }
 
-    @GetMapping({ "/read", "/modify" })
+    @GetMapping({ "/guestbook/read", "/guestbook/modify" })
     public void read(Long gno, @ModelAttribute("requestDto") PageRequestDto requestDto, Model model) {
 
         log.info("gno: " + gno);
@@ -80,7 +80,7 @@ class GuestbookController {
      * addFlashAttribute: url 뒤에 값이 붙지 않고 refresh하면 데이터 사라짐
      */
 
-    @PostMapping("/remove")
+    @PostMapping("/guestbook/remove")
     public String remove(Long gno, RedirectAttributes redirectAttributes) {
 
         log.info("gno: " + gno);
@@ -93,20 +93,20 @@ class GuestbookController {
 
     }
 
-    @PostMapping("/modify")
+    @PostMapping("/guestbook/modify")
     public String modify(GuestbookDto dto, @ModelAttribute("requestDto") PageRequestDto requestDto, RedirectAttributes redirectAttributes) throws Exception {
 
         log.info("post modify.................");
         log.info("dto: " + dto);
 
-        guestbookService.modify(dto);
+        Long gno = guestbookService.modify(dto);
 
         redirectAttributes.addAttribute("page", requestDto.getPage());
         redirectAttributes.addAttribute("type", requestDto.getType());
         redirectAttributes.addAttribute("keyword", requestDto.getKeyword());
         redirectAttributes.addAttribute("gno", dto.getGno());
 
-        return "redirect:/guestbook/read";
+        return "redirect:/guestbook/read?gno=" + gno;
 
     }
 

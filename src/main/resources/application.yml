@@ -9,3 +9,8 @@ spring:
     group:
       local: local, local-db
       real: real, real-db
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true #html form tag에서 PATH, DELETE 등의 method 사용이 불가한 문제 해결을 위한 filter 적용

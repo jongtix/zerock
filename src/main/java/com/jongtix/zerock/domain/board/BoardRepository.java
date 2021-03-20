@@ -1,5 +1,6 @@
 package com.jongtix.zerock.domain.board;
 
+import com.jongtix.zerock.domain.board.search.SearchBoardRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Long>, SearchBoardRepository {    //QuerydslRepositorySupport(SearchBoardRepository) 추가
 
     /**
      * JPQL의 조인을 이용하여 복합적인 결과 조회

@@ -305,6 +305,7 @@ class BoardControllerTest {
         //then
         resultActions.andDo(print())
                 .andExpect(status().is3xxRedirection())
+                .andExpect(model().attributeExists("bno"))
                 .andExpect(model().attributeExists("page"))
                 .andExpect(view().name("redirect:/board/read"));
     }
