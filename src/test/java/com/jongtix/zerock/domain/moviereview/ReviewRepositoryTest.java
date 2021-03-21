@@ -167,8 +167,9 @@ class ReviewRepositoryTest {
      * 2) 트랜잭션 관련 처리(@Commit & @Transactional)를 해야 함
      */
     @DisplayName("Member를_삭제했을_경우_Review_삭제_테스트")
-    @Commit
-    @Transactional
+    //ReviewRepository의 Method에 직접 Transactional Annotation을 추가
+//    @Commit
+//    @Transactional
     @Test
     void deleteByMember() {
         //given

@@ -25,14 +25,22 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByMovie(Movie movie);
 
     //Member를 이용해서 Review 삭제1
-    void deleteByMovieMember(MovieMember member);
+//    void deleteByMovieMember(MovieMember member);
 
-    //Member를 이용해서 Review 삭제2
-    //1에서 발생하는 비효율성(review의 수에 따라 delete 쿼리가 반복하여 실행 됨)을 개선
-    //(수정 필요) 이 방식으로 테스트 수행할 경우 review가 지워지지 않음
+//    //Member를 이용해서 Review 삭제2
+//    //1에서 발생하는 비효율성(review의 수에 따라 delete 쿼리가 반복하여 실행 됨)을 개선
+//    //(수정 필요) 이 방식으로 테스트 수행할 경우 review가 지워지지 않음
 //    @Modifying
 //    @Query("delete from Review mr where mr.movieMember =:member")
 //    void deleteByMovieMember(MovieMember member);
+
+    //Member를 이용해서 Review 삭제3
+    //1에서 발생하는 비효율성(review의 수에 따라 delete 쿼리가 반복하여 실행 됨)을 개선
+    //2에서 발생하는 문제(review가 지워지지 않음) 해결
+    @Transactional
+    @Modifying
+    @Query("delete from Review mr where mr.movieMember =:member")
+    void deleteByMovieMember(MovieMember member);
 
 
 }
