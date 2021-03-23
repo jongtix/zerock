@@ -9,9 +9,9 @@ generated
 
 application-test*.yml
 application-local*.yml
-application-real-db.yml
+application-real-*.yml
 
-/src/test/resources/upload/
+/src/test/resources/upload/image/
 
 ### STS ###
 .apt_generated

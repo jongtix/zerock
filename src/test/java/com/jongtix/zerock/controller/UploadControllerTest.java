@@ -1,10 +1,9 @@
 package com.jongtix.zerock.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,21 +18,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -45,6 +40,7 @@ class UploadControllerTest {
     @Value("${com.jongtix.zerock.upload.path}")
     private String uploadPath;
 
+    @Value("${com.jongtix.zerock.sample.image.path}")
     private String sampleImagePath;
 
     @LocalServerPort
@@ -60,8 +56,13 @@ class UploadControllerTest {
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .build();
+    }
 
-        sampleImagePath = uploadPath + File.separator + "sample";
+    @AfterAll
+    static void tearDown() throws IOException {
+        File testImageDir = new File("src/test/resources/upload/image");
+        //하위 폴더와 파일 전부 삭제
+        FileUtils.forceDelete(testImageDir);
     }
 
     @DisplayName("파일_삭제_테스트")
@@ -95,7 +96,7 @@ class UploadControllerTest {
     @Test
     void getFile() throws Exception {
         //given
-        String orgFileName1 = "sample" + File.separator + "사과1.jpg";
+        String orgFileName1 = "../sample" + File.separator + "사과1.jpg";
         String url = "http://localhost:" + port + "/display";
 
         //when

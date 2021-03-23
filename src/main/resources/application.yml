@@ -14,3 +14,13 @@ spring:
     hiddenmethod:
       filter:
         enabled: true #html form tag에서 PATH, DELETE 등의 method 사용이 불가한 문제 해결을 위한 filter 적용
+
+#cloud:
+#  aws:
+#    s3:
+#      bucket: aws-firstproject-jongtix-s3
+#    region:
+#      static: ap-northeast-2
+#    stack:
+#      auto: false #Spring Cloud 실행 시, 서버 구성을 자동화하는 CloudFormation이 자동으로 실행되는데 이를 사용하지 않겠다는 설정
+#                  #출처: https://victorydntmd.tistory.com/334

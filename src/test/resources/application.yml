@@ -42,4 +42,7 @@ com:
   jongtix:
     zerock:
       upload:
-        path: src/test/resources/upload/image
+        path: src/test/resources/upload/image/
+      sample:
+        image:
+          path: src/test/resources/upload/sample/

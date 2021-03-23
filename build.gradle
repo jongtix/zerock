@@ -32,6 +32,8 @@ dependencies {
 
 	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.14'	//Thumbnail 생성을 위한 thumbnailator 라이브러리 추가
 
+//	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.5.RELEASE'	//s3 사용을 위한 의존성 주입
+
 	//Querydsl 추가 -start
 	implementation 'com.querydsl:querydsl-jpa'	//Querydsl 추가
 	implementation 'com.querydsl:querydsl-core'
