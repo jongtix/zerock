@@ -11,6 +11,8 @@ application-test*.yml
 application-local*.yml
 application-real-db.yml
 
+/src/test/resources/upload/
+
 ### STS ###
 .apt_generated
 .classpath

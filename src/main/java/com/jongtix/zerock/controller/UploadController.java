@@ -135,13 +135,13 @@ public class UploadController {
                 //파일 원본 저장
                 uploadFile.transferTo(savePath);
 
-//                //썸네일 저장
-//                String thumbnailSaveName = uploadPath + File.separator + folderPath + File.separator + "s_" + uuid + "_" + fileName;
-//                log.info(thumbnailSaveName);
-//
-//                File thumbnailFile = new File(thumbnailSaveName);
-//
-//                Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 100, 100);
+                //썸네일 저장
+                String thumbnailSaveName = uploadPath + File.separator + folderPath + File.separator + "s_" + uuid + "_" + fileName;
+                log.info(thumbnailSaveName);
+
+                File thumbnailFile = new File(thumbnailSaveName);
+
+                Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 100, 100);
 
                 resultDtoList.add(new UploadResponseDto(fileName, uuid, folderPath));
             } catch (IOException e) {

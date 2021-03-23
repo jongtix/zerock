@@ -25,7 +25,7 @@ spring:
   servlet:
     multipart:
       enabled: true #파일 업로드 가능 여부 선택
-      location: J:\\upload  #업로드된 파일의 임시 저장 경로
+      location: src/test/resources/upload/image  #업로드된 파일의 임시 저장 경로
       max-request-size: 30MB  #한 번에 최대 업로드 가능 용량
       max-file-size: 10MB #파일 하나의 최대 크기
 
@@ -42,4 +42,4 @@ com:
   jongtix:
     zerock:
       upload:
-        path: J:\\upload
+        path: src/test/resources/upload/image
