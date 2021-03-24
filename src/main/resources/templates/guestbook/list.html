@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+<!-- template might not exist or might not be accessible by any of the configured Template Resolvers 문제 해결-->
+<!-- 출처: https://myserena.tistory.com/155 -->
 <th:block th:replace="~{layout/basic :: setContent(~{this :: content})}">
 
     <th:block th:fragment="content">
