@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 @Data
 @ToString
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+//@AllArgsConstructor
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardResponseDto {
 
     private Long bno;

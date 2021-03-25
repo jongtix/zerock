@@ -1,16 +1,13 @@
 package com.jongtix.zerock.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+//@AllArgsConstructor
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReplyRequestDto {
 
     private Long rno;
