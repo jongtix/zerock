@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,6 +43,7 @@ class GuestbookControllerTest {
     public void setup() {
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
+                .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .build();
     }
 

@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -52,6 +53,7 @@ class BoardControllerTest {
     void setup() {
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
+                .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .build();
     }
 
@@ -103,7 +105,7 @@ class BoardControllerTest {
     @Test
     void registerPost() throws Exception {
         //given
-        String title = "title";
+        String title = "제목";
         String content = "content";
         String email = "email";
 

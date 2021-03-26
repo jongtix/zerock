@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -48,6 +49,8 @@ class ReplyControllerTest {
     void setUp() {
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
+                .addFilters(new CharacterEncodingFilter("UTF-8", true)) //response body에서 한글 깨짐 문제 해결
+                                                                                            //출처: https://github.com/HomoEfficio/dev-tips/blob/master/Spring%20Test%20MockMvc%EC%9D%98%20%ED%95%9C%EA%B8%80%20%EA%B9%A8%EC%A7%90%20%EC%B2%98%EB%A6%AC.md
                 .build();
     }
 
@@ -60,7 +63,7 @@ class ReplyControllerTest {
                         .build()
         );
 
-        String text = "text";
+        String text = "한글";
         String replyer = "replyer";
         replyRepository.save(
                 Reply.builder()
