@@ -9,7 +9,7 @@ import javax.persistence.Id;
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
 public class Member extends BaseEntity {

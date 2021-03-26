@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity(name = "MovieMember")
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
 @Table(name = "m_member")

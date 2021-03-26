@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+//@AllArgsConstructor
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReplyResponseDto {
 
     private Long rno;

@@ -13,12 +13,12 @@ import javax.persistence.*;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor  //@Builder를 이용하기 위해서는 @AllArgsConstructor와 @NoArgsConstructor를 항상 같이 처리해야 컴파일 에러가 발생하지 않음
+@NoArgsConstructor(access = AccessLevel.PROTECTED)  //@NoArgsConstructor(access = AccessLevel.PROTECTED) + @Builder를 이용하기 위해서는 @AllArgsConstructor를 항상 같이 처리해야 컴파일 에러가 발생하지 않음
 /**
  * 출처: https://dingue.tistory.com/14
  * @NoArgsContructor를 사용할 때 주의점
  * 1. 필드들이 final로 생성되어 있는 경우에는 필드를 초기화 할 수 없기 때문에 생성자를 만들 수 없고 에러가 발생하게 됩니다.
- *      이 때는 @NoArgsConstructor(force = true) 옵션을 이용해서 final 필드를 0, false, null 등으로 초기화를 강제로 시켜서 생성자를 만들 수 있습니다.
+ *      이 때는 @NoArgsConstructor(access = AccessLevel.PROTECTED)(force = true) 옵션을 이용해서 final 필드를 0, false, null 등으로 초기화를 강제로 시켜서 생성자를 만들 수 있습니다.
  * 2. @NonNull 같이 필드에 제약조건이 설정되어 있는 경우, 생성자내 null-check 로직이 생성되지 않습니다.
  *      후에 초기화를 진행하기 전까지 null-check 로직이 발생하지 않는 점을 염두하고 코드를 개발해야 합니다.
  */
