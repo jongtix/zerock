@@ -52,7 +52,7 @@ public class GuestbookServiceImpl implements GuestbookService {
         Page<Guestbook> result = guestbookRepository.findAll(booleanBuilder, pageable); //TO-BE
                                                                                         //Querydsl 사용
 
-        Function<Guestbook, GuestbookDto> fn = (entity -> entityToDto(entity));
+        Function<Guestbook, GuestbookDto> fn = (this::entityToDto);
 
         return new PageResponseDto<>(result, fn);
     }

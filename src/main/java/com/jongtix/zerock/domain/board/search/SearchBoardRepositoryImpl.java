@@ -64,6 +64,7 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
         return null;
     }
 
+    @SuppressWarnings("unchecked")  //Type Safety : unchecked 문제 무시
     @Override
     public Page<Object[]> searchPage(String type, String keyword, Pageable pageable) {  //Service 단에서 DTO를 분리하여 Repository 영역에 전달하는 것이 좋음
 

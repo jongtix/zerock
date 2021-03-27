@@ -19,6 +19,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query( "select m, mi, avg(coalesce(r.grade, 0)), count(distinct r) " + //N+1문제 해결을 위해 max 삭제
                                                                             //이렇게 하면 가장 먼저 입력된 이미지 번호와 매핑되어 연결
                                                                             //=> 추가적인 쿼리 조회가 발생하지 않음(N+1문제 해결)
+                                                                            //((주의)) MariaDB에서만 정상적으로 작동함
             "from Movie m " +
             "left outer join MovieImage mi on mi.movie = m " +
             "left outer join Review r on r.movie = m " +

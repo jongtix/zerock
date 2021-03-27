@@ -32,7 +32,8 @@ dependencies {
 
 	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.14'	//Thumbnail 생성을 위한 thumbnailator 라이브러리 추가
 
-	implementation 'com.fasterxml.jackson.core:jackson-databind'	//JSON 데이터 처리를 위한 jackson 의존성 추가
+//	implementation 'com.fasterxml.jackson.core:jackson-databind'	//JSON 데이터 처리를 위한 jackson 의존성 추가
+																	//spring-boot-starter-web에 이미 포함되어 있음
 
 //	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.5.RELEASE'	//s3 사용을 위한 의존성 주입
 
@@ -56,6 +57,9 @@ dependencies {
 
 //	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	testImplementation group: 'org.testcontainers', name: 'testcontainers', version: '1.14.3'	//Test에서 MariaDB 사용을 위한 testcontainers 의존성 추가
+	testImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: '1.14.3'	//Test에서 MariaDB 사용을 위한 testcontainers 의존성 추가
 }
 
 test {

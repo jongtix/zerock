@@ -12,14 +12,24 @@ spring:
     hibernate:
       ddl-auto: update  #프로젝트 실행 시 자동으로 DDL을 생성할 것인지 설정(create, update, create-drop, validate)
 
+    #testcontainers 설정
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
+
+#  #AS-IS
+#  datasource:
+#    url: jdbc:h2:mem:testdb
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password:
+#    hikari:
+#      jdbc-url: jdbc:h2:mem:testdb;MODE=MYSQL
+#      username: sa
+
+  #TO-BE
+  #testcontainers 설정
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-    hikari:
-      jdbc-url: jdbc:h2:mem:testdb;MODE=MYSQL
-      username: sa
+    url: jdbc:tc:mariadb:10.3:///
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
 
   #파일 업로드 설정
   servlet:

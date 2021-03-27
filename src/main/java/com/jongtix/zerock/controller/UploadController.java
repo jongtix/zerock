@@ -1,6 +1,7 @@
 package com.jongtix.zerock.controller;
 
 import com.jongtix.zerock.dto.response.UploadResponseDto;
+import com.jongtix.zerock.utils.Constants;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,8 +47,8 @@ public class UploadController {
                 return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
-//            File thumbnail = new File(uploadPath + File.separator + "s_" + srcFileName);
-            File thumbnail = new File(file.getParent(), "s_" + file.getName());
+//            File thumbnail = new File(uploadPath + File.separator + Constants.THUMBNAIL_PREFIX + srcFileName);
+            File thumbnail = new File(file.getParent(), Constants.THUMBNAIL_PREFIX + file.getName());
             result = thumbnail.delete();
             if (!result) {
                 return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -136,7 +137,7 @@ public class UploadController {
                 uploadFile.transferTo(savePath);
 
                 //썸네일 저장
-                String thumbnailSaveName = uploadPath + File.separator + folderPath + File.separator + "s_" + uuid + "_" + fileName;
+                String thumbnailSaveName = uploadPath + File.separator + folderPath + File.separator + Constants.THUMBNAIL_PREFIX + uuid + "_" + fileName;
                 log.info(thumbnailSaveName);
 
                 File thumbnailFile = new File(thumbnailSaveName);

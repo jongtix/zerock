@@ -74,7 +74,8 @@
                 <a class="page-link" th:href="@{/board/list(page = ${result.start - 1}, type = ${pageRequestDto.type}, keyword = ${pageRequestDto.keyword})}" tabindex="-1">Previous</a>
             </li>
 
-            <li th:class="'page-item ' + ${result.page == page ? 'active' : ''}" th:each="page : ${result.pageList}">
+<!--            <li th:class="'page-item ' + ${result.page == page ? 'active' : ''}" th:each="page : ${result.pageList}">-->
+            <li th:class="page-item" th:classappend="${result.page == page} ? 'active'" th:each="page : ${result.pageList}">
                 <a class="page-link" th:href="@{/board/list(page = ${page}, type = ${pageRequestDto.type}, keyword = ${pageRequestDto.keyword})}">[[${page}]]</a>
             </li>
 

@@ -2,42 +2,42 @@ package com.jongtix.zerock.dto.response;
 
 import com.jongtix.zerock.utils.Constants;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.io.File;
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 @Data
-//@AllArgsConstructor
-@RequiredArgsConstructor
-public class UploadResponseDto implements Serializable {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class MovieImageResponseDto {
 
-    private final String fileName;
+    private String uuid;
 
-    private final String uuid;
+    private String imgName;
 
-    private final String folderPath;
+    private String path;
 
-    //전체 경로가 필요한 경우
     public String getImageURL() {
         try {
-            return URLEncoder.encode(folderPath + File.separator + uuid + "_" + fileName, "UTF-8");
+            return URLEncoder.encode(path + File.separator + uuid + Constants.FILE_NAME_SEPARATOR + imgName, Constants.DEFAULT_ENCODING);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return "";
     }
 
-    //썸네일 URL
     public String getThumbnailURL() {
         try {
-            return URLEncoder.encode(folderPath + File.separator + Constants.THUMBNAIL_PREFIX + uuid + "_" + fileName, "UTF-8");
+            return URLEncoder.encode(path + File.separator + Constants.THUMBNAIL_PREFIX + uuid + Constants.FILE_NAME_SEPARATOR + imgName, Constants.DEFAULT_ENCODING);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return "";
     }
+
 }

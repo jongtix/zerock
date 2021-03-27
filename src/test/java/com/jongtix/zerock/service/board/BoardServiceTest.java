@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class BoardServiceImplTest {
+class BoardServiceTest {
 
     @Autowired
     private BoardService boardService;
@@ -125,15 +125,15 @@ class BoardServiceImplTest {
         );
 
         //when
-        PageResponseDto responseDto = boardService.getList(new PageRequestDto());
+        PageResponseDto<BoardResponseDto, Object[]> responseDto = boardService.getList(new PageRequestDto());
 
         //then
-        assertThat(((BoardResponseDto) responseDto.getDtoList().get(0)).getTitle()).isEqualTo(title);
-        assertThat(((BoardResponseDto) responseDto.getDtoList().get(0)).getContent()).isEqualTo(content);
-        assertThat(((BoardResponseDto) responseDto.getDtoList().get(0)).getWriterEmail()).isEqualTo(email);
-        assertThat(((BoardResponseDto) responseDto.getDtoList().get(0)).getRegDate()).isAfter(now);
-        assertThat(((BoardResponseDto) responseDto.getDtoList().get(0)).getModDate()).isAfter(now);
-        assertThat(((BoardResponseDto) responseDto.getDtoList().get(0)).getReplyCount()).isEqualTo(2);
+        assertThat(responseDto.getDtoList().get(0).getTitle()).isEqualTo(title);
+        assertThat(responseDto.getDtoList().get(0).getContent()).isEqualTo(content);
+        assertThat(responseDto.getDtoList().get(0).getWriterEmail()).isEqualTo(email);
+        assertThat(responseDto.getDtoList().get(0).getRegDate()).isAfter(now);
+        assertThat(responseDto.getDtoList().get(0).getModDate()).isAfter(now);
+        assertThat(responseDto.getDtoList().get(0).getReplyCount()).isEqualTo(2);
     }
 
     @DisplayName("게시글_상세조회")

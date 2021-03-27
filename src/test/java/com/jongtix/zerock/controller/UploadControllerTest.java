@@ -1,5 +1,6 @@
 package com.jongtix.zerock.controller;
 
+import com.jongtix.zerock.utils.Constants;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,7 +76,7 @@ class UploadControllerTest {
         Path tempFile = Files.createTempFile(dir, "", "");
         File file = tempFile.toFile();
         String fileName = file.getName();
-        File tempThumbnail = new File(file.getParent(), "s_" + fileName);
+        File tempThumbnail = new File(file.getParent(), Constants.THUMBNAIL_PREFIX + fileName);
         tempThumbnail.createNewFile();
 
         String url = "http://localhost:" + port + "/removeFile";

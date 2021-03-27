@@ -114,6 +114,53 @@ class MovieRepositoryTest {
         assertThat(result.getSize()).isEqualTo(10);
     }
 
+    @DisplayName("영화_목록_테스트2")
+    @Test
+    void test_list_page2() {
+        //given
+        String title = "title";
+        Movie movie = movieRepository.save(
+                Movie.builder()
+                        .title(title)
+                        .build()
+        );
+        IntStream.rangeClosed(1, 20).forEach(
+                i -> {
+                    movieImageRepository.save(
+                            MovieImage.builder()
+                                    .uuid(UUID.randomUUID().toString())
+                                    .imgName("imgName" + i)
+                                    .path("path" + i)
+                                    .movie(movie)
+                                    .build()
+                    );
+
+                    reviewRepository.save(
+                            Review.builder()
+                                    .movie(movie)
+                                    .grade(new Random().nextInt(6))
+                                    .text("text" + i)
+                                    .build()
+                    );
+                }
+        );
+
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "mno"));
+
+        //when
+        Page<Object[]> result = movieRepository.getListPage(pageRequest);
+
+        //then
+        assertThat(result.getContent().get(0)[3]).isEqualTo(20L);
+        assertThat(((Movie) result.getContent().get(0)[0]).getTitle()).isEqualTo(title);
+        assertThat(((MovieImage) result.getContent().get(0)[1]).getPath()).isEqualTo("path1");
+        assertThat(((MovieImage) result.getContent().get(0)[1]).getImgName()).isEqualTo("imgName1");
+        assertThat(result.getTotalPages()).isEqualTo(1);
+        assertThat(result.getTotalElements()).isEqualTo(1);
+        assertThat(result.getNumberOfElements()).isEqualTo(1);
+        assertThat(result.getSize()).isEqualTo(10);
+    }
+
     @DisplayName("특정_영화_조회")
     @Test
     void getMovieWithAll() {

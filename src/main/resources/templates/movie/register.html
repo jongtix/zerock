@@ -24,6 +24,39 @@
 
             <div class="box"></div>
 
+            <style>
+                .uploadResult {
+                    width: 100%;
+                    background-color: gray;
+                    margin-top: 10px;
+                }
+
+                .uploadResult ul {
+                    display: flex;
+                    flex-flow: row;
+                    justify-content: center;
+                    align-items: center;
+                    vertical-align: top;
+                    overflow: auto;
+                }
+
+                .uploadResult ul li {
+                    list-style: none;
+                    padding: 10px;
+                    margin-left: 2em;
+                }
+
+                .uploadResult ul li img {
+                    width: 100px;
+                }
+            </style>
+
+            <div class="uploadResult">
+                <ul>
+
+                </ul>
+            </div>
+
             <button type="submit" class="btn btn-primary">Submit</button>
 
         </form>
@@ -36,6 +69,133 @@
 
     $(document).ready(function(e) {
 
+        //파일 업로드
+        $('.custom-file-input').on('change', function() {
+            var fileName = $(this).val().split('\\').pop();
+            $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
+
+            var formData = new FormData();
+
+            var inputFile = $(this);
+
+            var files = inputFile[0].files;
+
+            var appended = false;
+
+            for (var i = 0; i < files.length; i++) {
+                if (!checkExtension(files[i].name, files[i].size)) {
+                    return false;
+                }
+                console.log(files[i]);
+                formData.append('uploadFiles', files[i]);
+                appended = true;
+            }
+
+            //upload를 하지 않는다.
+            if (!appended) {
+                return;
+            }
+
+            for (var value of formData.values()) {
+                console.log(value);
+            }
+
+            //실제 업로드 부분
+            //upload ajax
+            $.ajax({
+                url: '/uploadAjax',
+                processData: false,
+                contentType: false,
+                data: formData,
+                type: 'POST',
+                dataType: 'json',
+                success: function (result) {
+                    console.log(result);
+                    showResult(result);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+                }
+            }); //$.ajax
+        }); //end change event
+
+        //파일 삭제
+        $('.uploadResult').on('click', 'li button', function(e) {
+
+            console.log('delete file');
+
+            var targetFile = $(this).data('file');
+
+            var targetLi = $(this).closest('li');
+
+            $.ajax({
+                url: '/removeFile',
+                data: { fileName: targetFile },
+                dataType: 'text',
+                type: 'POST',
+                success: function(result) {
+                    alert(result);
+                    targetLi.remove();
+                }
+            });   //$.ajax
+        });
+
+        //Submit
+        $('.btn-primary').on('click', function(e) {
+            e.preventDefault();
+
+            var str = "";
+
+            $('.uploadResult li').each(function (i, obj) {
+                var target = $(obj);
+
+                //imageDtoList[0]과 같이 구성하면 MovieRequestDto로 데이터를 수집할 때 자동으로 리스트로 변환되어 처리
+                str += "<input type='hidden' name='movieImageRequestDtoList[" + i + "].imgName' value='" + target.data('name') + "'>";
+                str += "<input type='hidden' name='movieImageRequestDtoList[" + i + "].path' value='" + target.data('path') + "'>";
+                str += "<input type='hidden' name='movieImageRequestDtoList[" + i + "].uuid' value='" + target.data('uuid') + "'>";
+            });
+
+            $('.box').html(str);
+
+            $('form').submit();
+        });
+
     });
+
+    //파일 체크
+    var regex = new RegExp("(.*?)\.(exe|sh|zi|alz|tiff)$");
+    var maxSize = 10485760; //10MB
+
+    function checkExtension(fileName, fileSize) {
+        if (fileSize >= maxSize) {
+            alert("파일 사이즈 초과");
+            return false;
+        }
+
+        if (regex.test(fileName)) {
+            alert("해당 종류의 파일은 업로드할 수 없습니다.");
+            return false;
+        }
+
+        return true;
+    }
+
+    //이미지 노출
+    function showResult(uploadResultArr) {
+        var uploadUl = $('.uploadResult ul');
+
+        var str = "";
+
+        $(uploadResultArr).each(function (i, obj) {
+            str += "<li data-name='" + obj.fileName + "' data-path='" + obj.folderPath + "' data-uuid='" + obj.uuid + "'>";
+            str += "<div>";
+            str += "<button type='button' data-file=\'" + obj.imageURL + "\' " + "class='btn-warning btn-sm'>X</button><br>";
+            str += "<img src='/display?fileName=" + obj.thumbnailURL + "'>";
+            str += "</div>";
+            str += "</li>";
+        });
+
+        uploadUl.append(str);
+    }
 
 </script>
