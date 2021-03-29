@@ -18,9 +18,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+//import org.testcontainers.containers.GenericContainer;
+//import org.testcontainers.junit.jupiter.Container;
+//import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -31,11 +31,11 @@ import static org.assertj.core.api.Assertions.*;
 @SuppressWarnings("unchecked")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@Testcontainers
+//@Testcontainers
 class MovieServiceTest {
 
-    @Container
-    private static GenericContainer<?> mariaDbContainer = new GenericContainer<>("mariadb");
+//    @Container
+//    private static GenericContainer<?> mariaDbContainer = new GenericContainer<>("mariadb");
 
     @Autowired
     private MovieService service;

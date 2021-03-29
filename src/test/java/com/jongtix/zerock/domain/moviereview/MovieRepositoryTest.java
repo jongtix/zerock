@@ -10,7 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.junit.jupiter.Container;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
@@ -22,6 +25,9 @@ import static org.assertj.core.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class MovieRepositoryTest {
+
+//    @Container
+//    public static DockerComposeContainer env = new DockerComposeContainer(new File("src/test/resources/docker-compose.yml"));
 
     @Autowired
     private MovieRepository movieRepository;

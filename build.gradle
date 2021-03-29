@@ -20,6 +20,8 @@ repositories {
 	mavenCentral()
 }
 
+def testcontainersVersion = '1.15.2'
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -58,8 +60,8 @@ dependencies {
 //	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	testImplementation group: 'org.testcontainers', name: 'testcontainers', version: '1.14.3'	//Test에서 MariaDB 사용을 위한 testcontainers 의존성 추가
-	testImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: '1.14.3'	//Test에서 MariaDB 사용을 위한 testcontainers 의존성 추가
+	testImplementation group: 'org.testcontainers', name: 'mariadb', version: testcontainersVersion	//Test에서 MariaDB 사용을 위한 testcontainers 의존성 추가
+	testImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: testcontainersVersion	//Test에서 MariaDB 사용을 위한 testcontainers 의존성 추가
 }
 
 test {
