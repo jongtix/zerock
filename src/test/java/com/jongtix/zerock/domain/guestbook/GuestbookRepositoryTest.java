@@ -102,9 +102,9 @@ class GuestbookRepositoryTest {
         IntStream.rangeClosed(1, 15).forEach(
                 i -> repository.save(
                         Guestbook.builder()
-                                .title("제목" + i)
-                                .content("내용" + i)
-                                .writer("작성자" + i)
+                                .title("title" + i)
+                                .content("content" + i)
+                                .writer("writer" + i)
                                 .build()
                 )
         );
@@ -139,9 +139,9 @@ class GuestbookRepositoryTest {
                 .forEach(
                         i -> repository.save(
                                 Guestbook.builder()
-                                        .title("제목" + i)
-                                        .content("내용" + i)
-                                        .writer("작성자" + i)
+                                        .title("title" + i)
+                                        .content("content" + i)
+                                        .writer("writer" + i)
                                         .build()
                         )
                 );

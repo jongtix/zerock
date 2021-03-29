@@ -31,11 +31,7 @@ import static org.assertj.core.api.Assertions.*;
 @SuppressWarnings("unchecked")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-//@Testcontainers
 class MovieServiceTest {
-
-//    @Container
-//    private static GenericContainer<?> mariaDbContainer = new GenericContainer<>("mariadb");
 
     @Autowired
     private MovieService service;
@@ -109,9 +105,9 @@ class MovieServiceTest {
         //then
         assertThat(responseDto.getDtoList().size()).isEqualTo(1);
         assertThat(responseDto.getDtoList().get(0).getTitle()).isEqualTo(title);
-        assertThat(responseDto.getDtoList().get(0).getMovieImageResponseDtoList().get(0).getUuid()).isEqualTo(uuid1);
-        assertThat(responseDto.getDtoList().get(0).getMovieImageResponseDtoList().get(0).getImgName()).isEqualTo(imgName1);
-        assertThat(responseDto.getDtoList().get(0).getMovieImageResponseDtoList().get(0).getPath()).isEqualTo(path1);
+        assertThat(responseDto.getDtoList().get(0).getMovieImageResponseDtoList().get(0).getUuid()).isEqualTo(uuid2);
+        assertThat(responseDto.getDtoList().get(0).getMovieImageResponseDtoList().get(0).getImgName()).isEqualTo(imgName2);
+        assertThat(responseDto.getDtoList().get(0).getMovieImageResponseDtoList().get(0).getPath()).isEqualTo(path2);
         assertThat(responseDto.getDtoList().get(0).getAvg()).isGreaterThan(0).isLessThan(5);
         assertThat(responseDto.getDtoList().get(0).getReviewCnt()).isEqualTo(20);
     }

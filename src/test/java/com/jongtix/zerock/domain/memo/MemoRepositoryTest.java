@@ -53,7 +53,7 @@ class MemoRepositoryTest {
         //when
         IntStream.rangeClosed(1, 100)
                 .forEach(i ->
-                        memoRepository.save(Memo.builder().memoText("내용" + i).build())
+                        memoRepository.save(Memo.builder().memoText("memoText" + i).build())
                 );
 
         //then
@@ -64,13 +64,13 @@ class MemoRepositoryTest {
     @Test
     public void test_select() throws Exception {
         //given
-        Long mno = memoRepository.save(Memo.builder().memoText("NEW 내용").build()).getMno();
+        Long mno = memoRepository.save(Memo.builder().memoText("NEW memoText").build()).getMno();
 
         //when
         Memo memo = memoRepository.findById(mno).orElseThrow(() -> new Exception());
 
         //then
-        assertThat(memo.getMemoText()).isEqualTo("NEW 내용");
+        assertThat(memo.getMemoText()).isEqualTo("NEW memoText");
     }
 
     @DisplayName("전체_데이터_조회_작업_테스트")
@@ -79,15 +79,15 @@ class MemoRepositoryTest {
         //given
         IntStream.rangeClosed(1, 100)
                 .forEach(i ->
-                        memoRepository.save(Memo.builder().memoText("내용" + i).build())
+                        memoRepository.save(Memo.builder().memoText("memoText" + i).build())
                 );
 
         //when
         List<Memo> memos = memoRepository.findAll();
 
         //then
-        assertThat(memos.get(0).getMemoText()).isEqualTo("내용" + 1);
-        assertThat(memos.get(99).getMemoText()).isEqualTo("내용" + 100);
+        assertThat(memos.get(0).getMemoText()).isEqualTo("memoText" + 1);
+        assertThat(memos.get(99).getMemoText()).isEqualTo("memoText" + 100);
     }
 
     @DisplayName("수정_작업_테스트")
@@ -117,7 +117,7 @@ class MemoRepositoryTest {
     public void test_delete_by_id() {
         //given
         Long mno = memoRepository.save(Memo.builder()
-                        .memoText("내용")
+                        .memoText("memoText")
                         .build()).getMno();
 
         //when
@@ -137,7 +137,7 @@ class MemoRepositoryTest {
         IntStream.rangeClosed(1, 100)
                 .forEach(i ->
                         memoRepository.save(Memo.builder()
-                                .memoText("내용" + i)
+                                .memoText("memoText" + i)
                                 .build())
                 );
 
@@ -155,7 +155,7 @@ class MemoRepositoryTest {
         assertThat(result.hasNext()).isTrue();  //다음 페이지 존재 여부
         assertThat(result.isFirst()).isTrue();  //시작 페이지 여부
 
-        assertThat(result.getContent().get(0).getMemoText()).isEqualTo("내용" + 1);
+        assertThat(result.getContent().get(0).getMemoText()).isEqualTo("memoText" + 1);
     }
 
     @DisplayName("정렬_페이징_테스트")
@@ -165,7 +165,7 @@ class MemoRepositoryTest {
         IntStream.rangeClosed(1, 100)
                 .forEach(i ->
                         memoRepository.save(Memo.builder()
-                                .memoText("내용" + i)
+                                .memoText("memoText" + i)
                                 .build())
                 );
         Sort sort1 = Sort.by("mno").descending();
@@ -178,7 +178,7 @@ class MemoRepositoryTest {
         Page<Memo> result = memoRepository.findAll(pageable);
 
         //then
-        assertThat(result.getContent().get(0).getMemoText()).isEqualTo("내용" + 100);
+        assertThat(result.getContent().get(0).getMemoText()).isEqualTo("memoText" + 100);
     }
 
     @DisplayName("쿼리_메서드_기능_테스트")
@@ -188,7 +188,7 @@ class MemoRepositoryTest {
         IntStream.rangeClosed(1, 100)
                 .forEach(i ->
                         memoRepository.save(Memo.builder()
-                                .memoText("내용" + i)
+                                .memoText("memoText" + i)
                                 .build())
                 );
         Long startMno = (long) memoRepository.getMinMno() - 1L;
@@ -198,8 +198,8 @@ class MemoRepositoryTest {
 
         //then
         assertThat(memos.size()).isEqualTo(11);
-        assertThat(memos.get(0).getMemoText()).isEqualTo("내용" + 80);
-        assertThat(memos.get(10).getMemoText()).isEqualTo("내용" + 70);
+        assertThat(memos.get(0).getMemoText()).isEqualTo("memoText" + 80);
+        assertThat(memos.get(10).getMemoText()).isEqualTo("memoText" + 70);
     }
 
     @DisplayName("쿼리_메서드_with_pageable_기능_테스트")
@@ -209,7 +209,7 @@ class MemoRepositoryTest {
         IntStream.rangeClosed(1, 100)
                 .forEach(i ->
                     memoRepository.save(Memo.builder()
-                            .memoText("내용" + i)
+                            .memoText("memoText" + i)
                             .build())
                 );
 
@@ -222,8 +222,8 @@ class MemoRepositoryTest {
 
         //then
         assertThat(memos.size()).isEqualTo(10);
-        assertThat(memos.get(0).getMemoText()).isEqualTo("내용" + 40);
-        assertThat(memos.get(9).getMemoText()).isEqualTo("내용" + 31);
+        assertThat(memos.get(0).getMemoText()).isEqualTo("memoText" + 40);
+        assertThat(memos.get(9).getMemoText()).isEqualTo("memoText" + 31);
     }
 
     @DisplayName("쿼리_메서드_삭제_기능_테스트")
@@ -234,7 +234,7 @@ class MemoRepositoryTest {
         IntStream.rangeClosed(1, 100)
                 .forEach(i ->
                         memoRepository.save(Memo.builder()
-                                .memoText("내용" + i)
+                                .memoText("memoText" + i)
                                 .build())
                 );
 
@@ -246,7 +246,7 @@ class MemoRepositoryTest {
         //then
         List<Memo> memos = memoRepository.findAll();
         assertThat(memos.size()).isEqualTo(81);
-        assertThat(memos.get(0).getMemoText()).isEqualTo("내용" + 20);
+        assertThat(memos.get(0).getMemoText()).isEqualTo("memoText" + 20);
     }
 
     @DisplayName("쿼리_어노테이션_조회_기능_테스트")
@@ -256,7 +256,7 @@ class MemoRepositoryTest {
         IntStream.rangeClosed(1, 100)
                 .forEach(i ->
                         memoRepository.save(Memo.builder()
-                                .memoText("내용" + i)
+                                .memoText("memoText" + i)
                                 .build())
                 );
 
@@ -265,8 +265,8 @@ class MemoRepositoryTest {
 
         //then
         assertThat(memos.size()).isEqualTo(100);
-        assertThat(memos.get(0).getMemoText()).isEqualTo("내용" + 100);
-        assertThat(memos.get(99).getMemoText()).isEqualTo("내용" + 1);
+        assertThat(memos.get(0).getMemoText()).isEqualTo("memoText" + 100);
+        assertThat(memos.get(99).getMemoText()).isEqualTo("memoText" + 1);
     }
 
     @DisplayName("쿼리_어노테이션_수정_기능_테스트")
@@ -323,7 +323,7 @@ class MemoRepositoryTest {
                 .forEach(
                         i -> memoRepository.save(
                                 Memo.builder()
-                                        .memoText("내용" + i)
+                                        .memoText("memoText" + i)
                                         .build()
                         )
                 );
@@ -351,7 +351,7 @@ class MemoRepositoryTest {
                 .forEach(
                         i -> memoRepository.save(
                                 Memo.builder()
-                                        .memoText("내용" + i)
+                                        .memoText("memoText" + i)
                                         .build()
                         )
                 );

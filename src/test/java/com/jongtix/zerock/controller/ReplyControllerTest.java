@@ -63,7 +63,7 @@ class ReplyControllerTest {
                         .build()
         );
 
-        String text = "한글";
+        String text = "text";
         String replyer = "replyer";
         replyRepository.save(
                 Reply.builder()
