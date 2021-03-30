@@ -1,9 +1,11 @@
 package com.jongtix.zerock.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jongtix.zerock.domain.moviereview.*;
 import com.jongtix.zerock.dto.request.MovieImageRequestDto;
 import com.jongtix.zerock.dto.request.MovieRequestDto;
 import com.jongtix.zerock.utils.Constants;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +24,9 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -36,6 +40,15 @@ class MovieControllerTest {
     private int port;
 
     @Autowired
+    private MovieRepository movieRepository;
+
+    @Autowired
+    private MovieImageRepository movieImageRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Autowired
     private WebApplicationContext context;
 
     private MockMvc mvc;
@@ -47,6 +60,92 @@ class MovieControllerTest {
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .alwaysDo(print())
                 .build();
+    }
+
+    @AfterEach
+    void tearDown() {
+        reviewRepository.deleteAll();
+        movieImageRepository.deleteAll();
+        movieRepository.deleteAll();
+    }
+
+    @DisplayName("영화_read_콜_테스트")
+    @Test
+    void read() throws Exception {
+        //given
+        String title = "title";
+        Movie movie = movieRepository.save(
+                Movie.builder()
+                        .title(title)
+                        .build()
+        );
+
+        String uuid1 = UUID.randomUUID().toString();
+        String imgName1 = "imgName1";
+        String path1 = "path1";
+        movieImageRepository.save(
+                MovieImage.builder()
+                        .uuid(uuid1)
+                        .imgName(imgName1)
+                        .path(path1)
+                        .movie(movie)
+                        .build()
+        );
+
+        String uuid2 = UUID.randomUUID().toString();
+        String imgName2 = "imgName2";
+        String path2 = "path2";
+        movieImageRepository.save(
+                MovieImage.builder()
+                        .uuid(uuid2)
+                        .imgName(imgName2)
+                        .path(path2)
+                        .movie(movie)
+                        .build()
+        );
+
+        IntStream.rangeClosed(1, 20)
+                .forEach(
+                        i -> {
+                            reviewRepository.save(
+                                    Review.builder()
+                                            .text("text" + i)
+                                            .grade(new Random().nextInt(6))
+                                            .movie(movie)
+                                            .build()
+                            );
+                        }
+                );
+
+        String url = "http://localhost:" + port + "/movie/read";
+
+        //when
+        ResultActions resultActions = mvc.perform(
+                get(url)
+                .param("mno", String.valueOf(movie.getMno()))
+        );
+
+        //then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("dto"));
+    }
+
+    @DisplayName("영화_리스트_콜_테스트")
+    @Test
+    void list() throws Exception {
+        //given
+        String url = "http://localhost:" + port + "/movie/list";
+
+        //when
+        ResultActions resultActions = mvc.perform(
+                get(url)
+        );
+
+        //then
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("result"));
     }
 
     @DisplayName("영화_등록_테스트")

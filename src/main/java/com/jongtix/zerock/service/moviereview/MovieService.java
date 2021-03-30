@@ -17,6 +17,8 @@ public interface MovieService {
 
     PageResponseDto<MovieResponseDto, Object[]> getList(PageRequestDto requestDto);
 
+    MovieResponseDto getMovie(Long mno);
+
     default Map<String, Object> dtoToEntity(MovieRequestDto dto) {
 
         Map<String, Object> result = new HashMap<>();

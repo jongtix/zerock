@@ -58,21 +58,21 @@ class MovieRepositoryTest {
         movieRepository.deleteAll();
     }
 
-    @BeforeAll
-    static void setup() {
+//    @BeforeAll
+//    static void setup() {
 //        env.withEnv("--character-set-server", "utf8");
 //        env.withEnv("--collation-server", "utf8_unicode_ci");
 //        container.setCommand("mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci");
 //        composeContainer.start();
 //        container.start();
 //        mariadb.withCommand("mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci");
-    }
+//    }
 
-    @AfterAll
-    static void tearDownAll() {
+//    @AfterAll
+//    static void tearDownAll() {
 //        container.stop();
 //        composeContainer.stop();
-    }
+//    }
 
 //    @Test
 //    void connection() {
