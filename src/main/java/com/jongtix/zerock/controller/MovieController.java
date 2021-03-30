@@ -46,7 +46,7 @@ public class MovieController {
     }
 
     @GetMapping({ "/movie/read", "/movie/modify" })
-    public void read(long mno, @ModelAttribute("requestDto") PageRequestDto requestDto, Model model) {
+    public void read(Long mno, @ModelAttribute("requestDto") PageRequestDto requestDto, Model model) {
 
         log.info("requestDto: " + requestDto);
 

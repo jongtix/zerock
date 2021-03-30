@@ -50,6 +50,7 @@ public interface MovieService {
                                             .uuid(imageDto.getUuid())
                                             .imgName(imageDto.getImgName())
                                             .path(imageDto.getPath())
+                                            .movie(movie)
                                             .build();
                                 }
                         ).collect(Collectors.toList());
