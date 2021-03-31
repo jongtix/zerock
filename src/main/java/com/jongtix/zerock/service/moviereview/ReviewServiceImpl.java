@@ -41,8 +41,8 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     public void modify(ReviewRequestDto requestDto) {
 
-        Long reviewNum = requestDto.getReviewNum();
-        Review review = reviewRepository.findById(reviewNum).orElseThrow(() -> new IllegalArgumentException("해당하는 리뷰가 없습니다. reviewNum: " + reviewNum));
+        Long reviewnum = requestDto.getReviewnum();
+        Review review = reviewRepository.findById(reviewnum).orElseThrow(() -> new IllegalArgumentException("해당하는 리뷰가 없습니다. reviewnum: " + reviewnum));
 
         review.update(requestDto.getText(), requestDto.getGrade());
 
@@ -50,7 +50,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public void remove(Long reviewNum) {
-        reviewRepository.deleteById(reviewNum);
+    public void remove(Long reviewnum) {
+        reviewRepository.deleteById(reviewnum);
     }
 }

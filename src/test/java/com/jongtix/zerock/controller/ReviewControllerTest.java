@@ -72,7 +72,7 @@ class ReviewControllerTest {
         MovieMember member1 = memberRepository.save(MovieMember.builder().build());
         String text1 = "text1";
         int grade1 = new Random().nextInt(6);
-        Long reviewNum1 = reviewRepository.save(
+        Long reviewnum1 = reviewRepository.save(
                 Review.builder()
                         .text(text1)
                         .grade(grade1)
@@ -84,7 +84,7 @@ class ReviewControllerTest {
         MovieMember member2 = memberRepository.save(MovieMember.builder().build());
         String text2 = "text2";
         int grade2 = new Random().nextInt(6);
-        Long reviewNum2 = reviewRepository.save(
+        Long reviewnum2 = reviewRepository.save(
                 Review.builder()
                         .text(text2)
                         .grade(grade2)
@@ -107,12 +107,12 @@ class ReviewControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].mno").value(movie.getMno()))
                 .andExpect(jsonPath("$.[0].mid").value(member1.getMid()))
-                .andExpect(jsonPath("$.[0].reviewNum").value(reviewNum1))
+                .andExpect(jsonPath("$.[0].reviewnum").value(reviewnum1))
                 .andExpect(jsonPath("$.[0].grade").value(grade1))
                 .andExpect(jsonPath("$.[0].text").value(text1))
                 .andExpect(jsonPath("$.[1].mno").value(movie.getMno()))
                 .andExpect(jsonPath("$.[1].mid").value(member2.getMid()))
-                .andExpect(jsonPath("$.[1].reviewNum").value(reviewNum2))
+                .andExpect(jsonPath("$.[1].reviewnum").value(reviewnum2))
                 .andExpect(jsonPath("$.[1].grade").value(grade2))
                 .andExpect(jsonPath("$.[1].text").value(text2));
     }
@@ -157,7 +157,7 @@ class ReviewControllerTest {
 
         String text = "text";
         int grade = new Random().nextInt(6);
-        Long reviewNum = reviewRepository.save(
+        Long reviewnum = reviewRepository.save(
                 Review.builder()
                         .text(text)
                         .grade(grade)
@@ -169,7 +169,7 @@ class ReviewControllerTest {
         String expectedText = "expectedText";
         int expectedGrade = new Random().nextInt(6);
         ReviewRequestDto requestDto = ReviewRequestDto.builder()
-                .reviewNum(reviewNum)
+                .reviewnum(reviewnum)
                 .grade(expectedGrade)
                 .text(expectedText)
                 .build();
@@ -178,7 +178,7 @@ class ReviewControllerTest {
 
         //when
         ResultActions resultActions = mvc.perform(
-                put(url, movie.getMno(), reviewNum)
+                put(url, movie.getMno(), reviewnum)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(Constants.DEFAULT_ENCODING)
                 .content(new ObjectMapper().writeValueAsString(requestDto))
@@ -187,7 +187,7 @@ class ReviewControllerTest {
         //then
         resultActions
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$").value(reviewNum));
+                .andExpect(jsonPath("$").value(reviewnum));
     }
 
     @DisplayName("리뷰_삭제_테스트")
@@ -198,7 +198,7 @@ class ReviewControllerTest {
         String text = "text";
         int grade = new Random().nextInt(6);
 
-        Long reviewNum = reviewRepository.save(
+        Long reviewnum = reviewRepository.save(
                 Review.builder()
                         .text(text)
                         .grade(grade)
@@ -215,7 +215,7 @@ class ReviewControllerTest {
 
         //when
         ResultActions resultActions = mvc.perform(
-                delete(url, movie.getMno(), reviewNum)
+                delete(url, movie.getMno(), reviewnum)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(Constants.DEFAULT_ENCODING)
         );
@@ -223,6 +223,6 @@ class ReviewControllerTest {
         //then
         resultActions
                 .andExpect(status().isNoContent())
-                .andExpect(jsonPath("$").value(reviewNum));
+                .andExpect(jsonPath("$").value(reviewnum));
     }
 }

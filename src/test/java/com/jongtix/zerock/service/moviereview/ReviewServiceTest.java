@@ -46,7 +46,7 @@ class ReviewServiceTest {
         String text = "text";
         int grade = new Random().nextInt(6);
 
-        Long reviewNum = reviewRepository.save(
+        Long reviewnum = reviewRepository.save(
                 Review.builder()
                         .text(text)
                         .grade(grade)
@@ -64,7 +64,7 @@ class ReviewServiceTest {
         ).getReviewnum();
 
         //when
-        reviewService.remove(reviewNum);
+        reviewService.remove(reviewnum);
 
         //then
         /**
@@ -73,7 +73,7 @@ class ReviewServiceTest {
          * 출처: https://exynoa.tistory.com/125?category=431864
          */
         assertThrows(NoSuchElementException.class, () -> {
-            reviewRepository.findById(reviewNum).orElseThrow(() -> new NoSuchElementException("해당하는 리뷰가 없습니다. reviewNum: " + reviewNum));
+            reviewRepository.findById(reviewnum).orElseThrow(() -> new NoSuchElementException("해당하는 리뷰가 없습니다. reviewnum: " + reviewnum));
         });
     }
 
@@ -86,7 +86,7 @@ class ReviewServiceTest {
 
         String text = "text";
         int grade = new Random().nextInt(6);
-        Long reviewNum = reviewRepository.save(
+        Long reviewnum = reviewRepository.save(
                 Review.builder()
                         .text(text)
                         .grade(grade)
@@ -98,17 +98,17 @@ class ReviewServiceTest {
         String expectedText = "expectedText";
         int expectedGrade = new Random().nextInt(6);
         ReviewRequestDto requestDto = ReviewRequestDto.builder()
-                .reviewNum(reviewNum)
+                .reviewnum(reviewnum)
                 .grade(expectedGrade)
                 .text(expectedText)
                 .build();
 
         //when
         reviewService.modify(requestDto);
-        Review review = reviewRepository.findById(reviewNum).orElseThrow(() -> new IllegalArgumentException("해당하는 리뷰가 없습니다. reviewNum: " + reviewNum));
+        Review review = reviewRepository.findById(reviewnum).orElseThrow(() -> new IllegalArgumentException("해당하는 리뷰가 없습니다. reviewnum: " + reviewnum));
 
         //then
-        assertThat(review.getReviewnum()).isEqualTo(reviewNum);
+        assertThat(review.getReviewnum()).isEqualTo(reviewnum);
         assertThat(review.getGrade()).isEqualTo(expectedGrade);
         assertThat(review.getText()).isEqualTo(expectedText);
         assertThat(review.getMovie().getMno()).isEqualTo(movie.getMno());
@@ -133,7 +133,7 @@ class ReviewServiceTest {
 
         //when
         Long result = reviewService.register(requestDto);
-        Review review = reviewRepository.findById(result).orElseThrow(() -> new IllegalArgumentException("해당하는 리뷰가 없습니다. reviewNum: " + result));
+        Review review = reviewRepository.findById(result).orElseThrow(() -> new IllegalArgumentException("해당하는 리뷰가 없습니다. reviewnum: " + result));
 
         //then
         assertThat(review.getGrade()).isEqualTo(grade);
@@ -263,7 +263,7 @@ class ReviewServiceTest {
         ReviewResponseDto responseDto = reviewService.entityToDto(review);
 
         //then
-        assertThat(responseDto.getReviewNum()).isEqualTo(review.getReviewnum());
+        assertThat(responseDto.getReviewnum()).isEqualTo(review.getReviewnum());
         assertThat(responseDto.getMno()).isEqualTo(movie.getMno());
         assertThat(responseDto.getMid()).isEqualTo(member.getMid());
         assertThat(responseDto.getNickname()).isEqualTo(member.getNickname());

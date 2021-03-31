@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReviewRequestDto {
 
-    private Long reviewNum;
+    private Long reviewnum;
 
     private Long mno;
 

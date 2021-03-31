@@ -31,9 +31,9 @@ public class ReviewController {
     public ResponseEntity<Long> addReview(@RequestBody ReviewRequestDto requestDto) {
         log.info("requestDto: " + requestDto);
 
-        Long reviewNum = reviewService.register(requestDto);
+        Long reviewnum = reviewService.register(requestDto);
 
-        return new ResponseEntity<>(reviewNum, HttpStatus.CREATED); //CREATED: 응답코드 201, 요청이 정상 처리 되었고 새로운 리소스가 생김, POST & PUT
+        return new ResponseEntity<>(reviewnum, HttpStatus.CREATED); //CREATED: 응답코드 201, 요청이 정상 처리 되었고 새로운 리소스가 생김, POST & PUT
     }
 
     @PutMapping("/reviews/{mno}/{reviewnum}")

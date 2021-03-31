@@ -63,7 +63,7 @@ public class UploadController {
     }
 
     @GetMapping("/display")
-    public ResponseEntity<byte[]> getFile(String fileName) {
+    public ResponseEntity<byte[]> getFile(String fileName,String type) {
 
         ResponseEntity<byte[]> result = null;
 
@@ -73,6 +73,11 @@ public class UploadController {
             log.info("fileName: " + fileName);
 
             File file = new File(uploadPath + File.separator + srcFileName);
+
+//            if (size != null && "1".equals(size)) {
+            if ("1".equals(type)) {
+                file = new File(file.getParent(), file.getName().substring(2));
+            }
 
             log.info("file: " + file);
 
@@ -91,6 +96,36 @@ public class UploadController {
 
         return result;
     }
+
+//    @GetMapping("/display")
+//    public ResponseEntity<byte[]> getFile(String fileName) {
+//
+//        ResponseEntity<byte[]> result = null;
+//
+//        try {
+//            String srcFileName = URLDecoder.decode(fileName, "UTF-8");
+//
+//            log.info("fileName: " + fileName);
+//
+//            File file = new File(uploadPath + File.separator + srcFileName);
+//
+//            log.info("file: " + file);
+//
+//            HttpHeaders header = new HttpHeaders();
+//
+//            //MIME타입 처리
+//            //파일의 확장자에 따라서 브라우저에 전송하는 MIME 타입이 달라져야 하는 문제 해결
+//            header.add("Content-type", Files.probeContentType(file.toPath()));
+//
+//            //파일 데이터 처리
+//            result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header , HttpStatus.OK);
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//
+//        return result;
+//    }
 
     @PostMapping("/uploadAjax")
     public ResponseEntity<List<UploadResponseDto>> uploadFile(MultipartFile[] uploadFiles) {
@@ -151,7 +186,7 @@ public class UploadController {
 
         }
 
-        return new ResponseEntity<>(resultDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(resultDtoList, HttpStatus.CREATED);
     }
 
     private String makeFolder() {

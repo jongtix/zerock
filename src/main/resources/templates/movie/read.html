@@ -51,7 +51,7 @@
 
         <div class="uploadResult">
             <ul>
-                <li th:each="movieImage : ${dto.movieImageResponseDtoList}">
+                <li th:each="movieImage : ${dto.movieImageResponseDtoList}" th:data-file="${movieImage.getThumbnailURL()}">
                     <img th:if="${movieImage.path != null}" th:src="|/display?fileName=${movieImage.getThumbnailURL()}|">
                 </li>
             </ul>
@@ -97,13 +97,13 @@
                             <input type="text" class="form-control" name="text" placeholder="Good Movie!">
                         </div>
                     </div>
-                </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary reviewSaveBtn">Save Changes</button>
-                    <button type="button" class="btn btn-warning modifyBtn">Modify</button>
-                    <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary reviewSave">Save Changes</button>
+                        <button type="button" class="btn btn-warning reviewModify">Modify</button>
+                        <button type="button" class="btn btn-danger reviewRemove">Remove</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -138,6 +138,7 @@
 
 <script>
     $(document).ready(function(e) {
+        //starrr 라이브러리 사용
         var grade = 0;
         var mno = [[${dto.mno}]];
 
@@ -155,16 +156,131 @@
         var inputMid = $('input[name="mid"]');
         var inputText = $('input[name="text"]');
 
+        //리뷰 등록 모달
         $('.addReviewBtn').click(function() {
-            console.log('test1111111111');
+            reviewModal.modal('show');
+
             inputMid.val('');
             inputText.val('');
 
-            $('.removeBtn, .modifyBtn').show();
-            $('.reviewSaveBtn').hide();
-
-            reviewModal.modal('show');
+            $('.reviewRemove, .reviewModify').hide();
+            $('.reviewSave').show();
         });
 
+        //리뷰 저장
+        $('.reviewSave').click(function() {
+            var data = { mno: mno, grade: grade, text: inputText.val(), mid: inputMid.val() };
+
+            $.ajax({
+                url: '/reviews/' + mno,
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'text',
+                success: function(result) {
+                    self.location.reload();
+                }
+            });
+
+            reviewModal.modal('hide');
+        });
+
+        var reviewnum;
+
+        //리뷰 클릭 이벤트
+        $('.reviewList').on('click', '.card-body', function() {
+            reviewModal.modal('show');
+
+            $('.reviewSave').hide();
+            $('.reviewRemove, .reviewModify').show();
+
+            var targetReview = $(this);
+
+            reviewnum = targetReview.data('reviewnum');
+
+            console.log('reviewnum: ' + reviewnum);
+            inputMid.val(targetReview.data('mid'));
+            inputText.val(targetReview.find('.card-title').clone().children().remove().end().text());
+
+            var grade = targetReview.find('.card-title span').html();
+            $('.starrr a:nth-child(' + grade + ')').trigger('click');
+        });
+
+        //리뷰 수정
+        $('.reviewModify').click(function() {
+            var data = { reviewnum: reviewnum, mno: mno, grade: grade, text: inputText.val(), mid: inputMid.val() };
+
+            console.log(data);
+
+            $.ajax({
+                url: '/reviews/' + mno + '/' + reviewnum,
+                type: 'PUT',
+                data: JSON.stringify(data),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'text',
+                success: function(result) {
+                    self.location.reload();
+                }
+            });
+
+            reviewModal.modal('hide');
+        });
+
+        //리뷰 삭제
+        $('.reviewRemove').click(function() {
+            var data = { reviewnum: reviewnum };
+
+            $.ajax({
+                url: '/reviews/' + mno + '/' + reviewnum,
+                type: 'DELETE',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'text',
+                success: function(result) {
+                    self.location.reload();
+                }
+            });
+
+            reviewModal.modal('hide');
+        });
+
+        //리뷰 리스트 노출
+        function getMovieReviews() {
+
+            function formatTime(str) {
+                var date = new Date(str);
+
+                return date.getFullYear() + '/' +
+                    (date.getMonth() + 1) + '/' +
+                    date.getDate() + ' ' +
+                    date.getHours() + ':' +
+                    date.getMinutes();
+            }
+
+            $.getJSON('/reviews/' + mno + '/all', function(arr) {
+                var str = '';
+
+                $.each(arr, function(idx, review) {
+                    str += '<div class="card-body" data-reviewnum=' + review.reviewnum + ' data-mid="' + review.mid + '">';
+                    str += '<h5 class="card-title">' + review.text + ' <span>' + review.grade + '</span></h5>';
+                    str += '<h6 class="card-subtitle mb-2 text-muted">' + review.nickname + '</h6>';
+                    str += '<p class="card-text">' + formatTime(review.regDate) + '</p>';
+                    str += '</div>';
+                });
+
+                $('.reviewList').html(str);
+            });
+
+        }
+
+        getMovieReviews();
+
+        //이미지 원본 노출
+        $('.uploadResult li').click(function() {
+            var file = $(this).data('file');
+
+            $('.imageModal .modal-body').html('<img style="width:100%" src="/display?fileName=' + file + '&type=1">');
+
+            $('.imageModal').modal('show');
+        });
     });
 </script>

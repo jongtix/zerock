@@ -169,7 +169,7 @@ class UploadControllerTest {
 
         //then
         resultActions.andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.[0].fileName").value(orgFileName1))
                 .andExpect(jsonPath("$.[0].folderPath").value(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))))
                 .andExpect(jsonPath("$.[1].fileName").value(orgFileName2))

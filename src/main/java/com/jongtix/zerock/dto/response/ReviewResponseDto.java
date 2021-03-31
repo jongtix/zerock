@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ReviewResponseDto {
 
-    private Long reviewNum;
+    private Long reviewnum;
 
     private Long mno;
 

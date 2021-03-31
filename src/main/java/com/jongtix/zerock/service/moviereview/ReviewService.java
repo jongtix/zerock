@@ -16,11 +16,11 @@ public interface ReviewService {
 
     void modify(ReviewRequestDto requestDto);
 
-    void remove(Long reviewNum);
+    void remove(Long reviewnum);
 
     default Review dtoToEntity(ReviewRequestDto dto) {
         return Review.builder()
-                .reviewnum(dto.getReviewNum())
+                .reviewnum(dto.getReviewnum())
                 .text(dto.getText())
                 .grade(dto.getGrade())
                 .movie(
@@ -38,7 +38,7 @@ public interface ReviewService {
 
     default ReviewResponseDto entityToDto(Review entity) {
         return ReviewResponseDto.builder()
-                .reviewNum(entity.getReviewnum())
+                .reviewnum(entity.getReviewnum())
                 .mno(entity.getMovie().getMno())
                 .mid(entity.getMovieMember().getMid())
                 .nickname(entity.getMovieMember().getNickname())

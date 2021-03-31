@@ -188,7 +188,7 @@ class ReviewRepositoryTest {
         int grade1 = new Random().nextInt(6);
         String text1 = "text1";
 
-        Long reviewNum1 = reviewRepository.save(
+        Long reviewnum1 = reviewRepository.save(
                 Review.builder()
                         .grade(grade1)
                         .text(text1)
@@ -199,7 +199,7 @@ class ReviewRepositoryTest {
         int grade2 = new Random().nextInt(6);
         String text2 = "text2";
 
-        Long reviewNum2 = reviewRepository.save(
+        Long reviewnum2 = reviewRepository.save(
         Review.builder()
                 .grade(grade2)
                 .text(text2)
@@ -213,8 +213,8 @@ class ReviewRepositoryTest {
 
         //then
         assertThrows(NoSuchElementException.class, () -> {
-                    reviewRepository.findById(reviewNum1).orElseThrow(() -> new NoSuchElementException("해당하는 리뷰가 없습니다. reviewNum: " + reviewNum1));
-                    reviewRepository.findById(reviewNum2).orElseThrow(() -> new NoSuchElementException("해당하는 리뷰가 없습니다. reviewNum: " + reviewNum2));
+                    reviewRepository.findById(reviewnum1).orElseThrow(() -> new NoSuchElementException("해당하는 리뷰가 없습니다. reviewnum: " + reviewnum1));
+                    reviewRepository.findById(reviewnum2).orElseThrow(() -> new NoSuchElementException("해당하는 리뷰가 없습니다. reviewnum: " + reviewnum2));
                 }
         );
         assertThrows(NoSuchElementException.class, () ->
