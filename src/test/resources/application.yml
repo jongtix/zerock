@@ -28,7 +28,7 @@ spring:
   #TO-BE
   #testcontainers 설정
   datasource:
-    url: jdbc:tc:mariadb:///localhost:3306/mysql
+    url: jdbc:tc:mariadb:///
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
 
 #  datasource:
