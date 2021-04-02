@@ -19,6 +19,10 @@ public interface MovieService {
 
     MovieResponseDto getMovie(Long mno);
 
+    void removeMovie(Long mno);
+
+    Long modify(MovieRequestDto movieRequestDto);
+
     default Map<String, Object> dtoToEntity(MovieRequestDto dto) {
 
         Map<String, Object> result = new HashMap<>();

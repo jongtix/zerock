@@ -18,10 +18,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 //import org.testcontainers.containers.GenericContainer;
 //import org.testcontainers.junit.jupiter.Container;
 //import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.IntStream;
@@ -31,7 +36,15 @@ import static org.assertj.core.api.Assertions.*;
 @SuppressWarnings("unchecked")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@Testcontainers
 class MovieServiceTest {
+
+    @Container
+    private static final DockerComposeContainer<?> container = new DockerComposeContainer<>(
+            new File("src/test/resources/docker-compose.yml")
+    )
+            .withExposedService("db", 3306, Wait.forListeningPort());   //Wait.forListeningPort(): 컨테이너가 뜨기 전에 테스트를 실행하는 것을 방지하기 위한 옵션
+                                                                                            //출처: https://sysgongbu.tistory.com/155
 
     @Autowired
     private MovieService service;

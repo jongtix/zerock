@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -19,7 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequiredArgsConstructor
 public class MovieController {
 
-    private final MovieService service;
+    private final MovieService movieService;
 
     @GetMapping("/movie/register")
     public void register() {}
@@ -29,7 +26,7 @@ public class MovieController {
 
         log.info("movieRequestDto: " + requestDto);
 
-        Long mno = service.register(requestDto);
+        Long mno = movieService.register(requestDto);
 
         redirectAttributes.addFlashAttribute("msg", mno);
 
@@ -41,7 +38,7 @@ public class MovieController {
 
         log.info("requestDto: " + requestDto);
 
-        model.addAttribute("result", service.getList(requestDto));
+        model.addAttribute("result", movieService.getList(requestDto));
 
     }
 
@@ -50,10 +47,40 @@ public class MovieController {
 
         log.info("requestDto: " + requestDto);
 
-        MovieResponseDto responseDto = service.getMovie(mno);
+        MovieResponseDto responseDto = movieService.getMovie(mno);
 
         model.addAttribute("dto", responseDto);
 
+    }
+    
+    @DeleteMapping("/movie/remove")
+    public String remove(@ModelAttribute("requestDto") PageRequestDto pageRequestDto, Long mno, RedirectAttributes redirectAttributes) {
+        log.info("mno: " + mno);
+
+        movieService.removeMovie(mno);
+
+        redirectAttributes.addFlashAttribute("msg", mno);
+        redirectAttributes.addAttribute("page", pageRequestDto.getPage());
+        redirectAttributes.addAttribute("type", pageRequestDto.getType());
+        redirectAttributes.addAttribute("keyword", pageRequestDto.getKeyword());
+
+        return "redirect:/movie/list";
+    }
+
+    @PatchMapping("/movie/modify")
+    public String modify(MovieRequestDto movieRequestDto, @ModelAttribute("requestDto") PageRequestDto pageRequestDto, RedirectAttributes redirectAttributes) {
+        log.info("post modify...........");
+        log.info("movieRequestDto: " + movieRequestDto);
+        log.info("pageRequestDto: " + pageRequestDto);
+
+        Long mno = movieService.modify(movieRequestDto);
+
+        redirectAttributes.addAttribute("mno", mno);
+        redirectAttributes.addAttribute("page", pageRequestDto.getPage());
+        redirectAttributes.addAttribute("type", pageRequestDto.getType());
+        redirectAttributes.addAttribute("keyword", pageRequestDto.getKeyword());
+
+        return "redirect:/movie/read";
     }
 
 }

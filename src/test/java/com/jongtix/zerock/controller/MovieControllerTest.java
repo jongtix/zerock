@@ -1,9 +1,11 @@
 package com.jongtix.zerock.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jongtix.zerock.domain.moviereview.*;
 import com.jongtix.zerock.dto.request.MovieImageRequestDto;
 import com.jongtix.zerock.dto.request.MovieRequestDto;
+import com.jongtix.zerock.dto.request.PageRequestDto;
 import com.jongtix.zerock.utils.Constants;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,6 +69,37 @@ class MovieControllerTest {
         reviewRepository.deleteAll();
         movieImageRepository.deleteAll();
         movieRepository.deleteAll();
+    }
+
+    @DisplayName("영화_remove_콜_테스트")
+    @Test
+    void remove() throws Exception {
+        //given
+        Movie movie = movieRepository.save(Movie.builder().build());
+        Long mno = movie.getMno();
+
+        movieImageRepository.save(
+                MovieImage.builder()
+                        .movie(movie)
+                        .build()
+        );
+
+        String url = "http://localhost:" + port + "/movie/remove";
+
+        //when
+        ResultActions resultActions = mvc.perform(
+                delete(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding(Constants.DEFAULT_ENCODING)
+                .param("mno", String.valueOf(mno))
+                .content(new ObjectMapper().writeValueAsString(PageRequestDto.builder().build()))
+        );
+
+        //then
+        resultActions
+                .andExpect(status().is3xxRedirection())
+                .andExpect(flash().attributeExists("msg"))
+                .andExpect(view().name("redirect:/movie/list"));
     }
 
     @DisplayName("영화_read_콜_테스트")

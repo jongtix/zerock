@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,6 +96,27 @@ public class MovieServiceImpl implements MovieService {
         Long reviewCnt = (Long) result.get(0)[3];
 
         return entityToDto(movie, movieImageList, avg, reviewCnt);
+    }
+
+    @Override
+    @Transactional
+    public void removeMovie(Long mno) {
+        Movie movie = movieRepository.findById(mno).orElseThrow(() -> new IllegalArgumentException("해당하는 영화가 없습니다. mno: " + mno));
+        imageRepository.deleteByMovie(movie);
+        movieRepository.deleteById(mno);
+    }
+
+    @Override
+    @Transactional
+    public Long modify(MovieRequestDto movieRequestDto) {
+
+        Long mno = movieRequestDto.getMno();
+
+        Movie movie = movieRepository.getOne(mno);
+
+        movie.update(movieRequestDto.getTitle());
+
+        return movie.getMno();
     }
 
 

@@ -22,4 +22,8 @@ public class Movie extends BaseEntity {    //JPA M:N 관계를 처리할 때 매
 
     private String title;
 
+    public void update(String title) {
+        this.title = title;
+    }
+
 }

@@ -14,11 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 public class MovieRequestDto {
 
+    private Long mno;
+
     private String title;
 
     @Builder.Default
     private List<MovieImageRequestDto> movieImageRequestDtoList = new ArrayList<>();
-
-
 
 }

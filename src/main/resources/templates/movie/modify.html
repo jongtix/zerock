@@ -5,8 +5,135 @@
 
     <th:block th:fragment="content">
 
+        <h1 class="mt-4">Movie Modify Page</h1>
 
+        <form accept-charset="/movie/modify" method="post">
+
+            <input type="hidden" name="page" th:value="${requestDto.page}">
+            <input type="hidden" name="type" th:value="${requestDto.type}">
+            <input type="hidden" name="keyword" th:value="${requestDto.keyword}">
+            <input type="hidden" name="_method" id="_method" th:value="PATCH">
+
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" class="form-control" name="title" th:value="${dto.title}">
+            </div>
+
+            <div class="form-group">
+                <label>Review Count</label>
+                <input type="text" class="form-control" name="reviewCnt" th:value="${dto.reviewCnt}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Avg</label>
+                <input type="text" class="form-control" name="avg" th:value="${dto.avg}" readonly>
+            </div>
+
+            <style>
+                .uploadResult {
+                    width: 100%;
+                    background-color: gray;
+                    margin-top: 10px;
+                }
+
+                .uploadResult ul {
+                    display: flex;
+                    flex-flow: row;
+                    justify-content: center;
+                    align-items: center;
+                    vertical-align: top;
+                    overflow: auto;
+                }
+
+                .uploadResult ul li {
+                    list-style: none;
+                    padding: 10px;
+                    margin-left: 2em;
+                }
+
+                .uploadResult ul li img {
+                    width: 100px;
+                }
+            </style>
+
+            <div class="uploadResult">
+                <ul>
+                    <li th:each="movieImage : ${dto.movieImageResponseDtoList}" th:data-file="${movieImage.getThumbnailURL()}">
+                        <img th:if="${movieImage.path != null}" th:src="|/display?fileName=${movieImage.getThumbnailURL()}|">
+                    </li>
+                </ul>
+            </div>
+
+        </form>
+
+        <button type="button" class="btn btn-primary modifyBtn">Modify</button>
+
+        <button type="button" class="btn btn-info listBtn">List</button>
+
+        <button type="button" class="btn btn-danger removeBtn">Remove</button>
 
     </th:block>
 
 </th:block>
+
+<script th:inline="javascript">
+
+    var actionForm = $('form');
+    var method = $('#_method');
+
+    $(".removeBtn").click(function() {
+
+        if (!confirm("삭제하시겠습니까?")) {
+            return ;
+        }
+
+        actionForm
+            .attr("action", "/movie/remove")
+            .attr("method", "post");
+        method.val("DELETE");
+
+        actionForm.submit();
+
+    });
+
+    $(".modifyBtn").click(function() {
+
+        if(!confirm("수정하시겠습니까?")) {
+            return ;
+        }
+
+        actionForm
+            .attr("action", "/movie/modify")
+            .attr("method", "post");
+        method.val("PATCH");
+
+        actionForm.submit();
+
+    });
+
+    $(".listBtn").click(function() {
+
+        //AS-IS
+        //var pageInfo = $("input[name='page']");
+        //TO-BE
+        var page = $("input[name='page']");
+        var type = $("input[name='type']");
+        var keyword = $("input[name='keyword']");
+
+        actionForm.empty(); //form 태그의 모든 내용을 지우고
+        //AS-IS
+        //actionForm.append(pageInfo);    //목록 페이지 이동에 필요한 내용만 다시 추가
+        //TO-BE
+        actionForm.append(page);
+        actionForm.append(type);
+        actionForm.append(keyword);
+
+        actionForm
+            .attr("action", "/movie/list")
+            .attr("method", "get");
+
+        actionForm.submit();
+
+    });
+
+</script>
