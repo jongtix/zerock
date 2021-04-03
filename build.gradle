@@ -30,7 +30,9 @@ dependencies {
 	compile 'org.mariadb.jdbc:mariadb-java-client'	//MariaDB 의존성 추가
 
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'	//Thymeleaf 의존성 추가
-	compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-java8time'	//Thymeleaf LocalDateTime, LocalDate 유틸 의존성 추가
+	implementation group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-java8time'	//Thymeleaf LocalDateTime, LocalDate 유틸 의존성 추가
+
+	implementation group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5'	//Thymeleaf springsecurity 의존성 추가
 
 	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.14'	//Thumbnail 생성을 위한 thumbnailator 라이브러리 추가
 
@@ -38,6 +40,9 @@ dependencies {
 																	//spring-boot-starter-web에 이미 포함되어 있음
 
 //	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.5.RELEASE'	//s3 사용을 위한 의존성 주입
+
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'	//Spring Security 의존성 추가
+	implementation group: 'org.springframework.security', name: 'spring-security-test'	//Spring Security 의존성 추가
 
 	//Querydsl 추가 -start
 	implementation 'com.querydsl:querydsl-jpa'	//Querydsl 추가

@@ -28,3 +28,9 @@ com:
     zerock:
       upload:
         path: /home/ec2-user/zerock/upload/
+
+logging:
+  level:
+    org:
+      zerock:
+        security: debug
