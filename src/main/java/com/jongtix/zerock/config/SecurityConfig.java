@@ -21,15 +21,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                             //                       특정한 문자열이 암호화된 결과인지만 확인 가능
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {  //AuthenticationManagerBuilder: 코드를 통해서 직접 인증 매니저를 설정할 때 사용
-//        super.configure(auth);
-        auth.inMemoryAuthentication()
-                .withUser("user1")  //user
-                .password("$2a$10$0SiKnOmL9EgKeHyAIXKFU.CjFrpJoeaPho/mTGzUbJD5dLnEvLOkS")   //user12!@에 대한 암호화값
-//                .roles("USER"); //사용자 롤
-                .roles(Role.USER.getKey());
-    }
+//    //더이상 사용하지 않음
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {  //AuthenticationManagerBuilder: 코드를 통해서 직접 인증 매니저를 설정할 때 사용
+////        super.configure(auth);
+//        auth.inMemoryAuthentication()
+//                .withUser("user1")  //user
+//                .password("$2a$10$0SiKnOmL9EgKeHyAIXKFU.CjFrpJoeaPho/mTGzUbJD5dLnEvLOkS")   //user12!@에 대한 암호화값
+////                .roles("USER"); //사용자 롤
+//                .roles(Role.USER.getKey());
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {  //리소스 접근 제한

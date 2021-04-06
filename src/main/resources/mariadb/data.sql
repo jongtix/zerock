@@ -67,3 +67,7 @@ insert into review(moddate, regdate, grade, movie_mno, movie_member_mid, text) v
 insert into review(moddate, regdate, grade, movie_mno, movie_member_mid, text) values(current_timestamp(), current_timestamp(), 4, 4, 5, 'text45');
 insert into review(moddate, regdate, grade, movie_mno, movie_member_mid, text) values(current_timestamp(), current_timestamp(), 3, 5, 1, 'text51');
 insert into review(moddate, regdate, grade, movie_mno, movie_member_mid, text) values(current_timestamp(), current_timestamp(), 3, 5, 5, 'text55');
+
+insert into club_member (moddate, regdate, from_social, name, password, email) values(current_timestamp(), current_timestamp(), false, 'name', '$2a$10$p10DGyVLMLQgrKI26SMGqul9b3bXO5Co1OJBP1Y8MNSEMa36kOWjO', 'user@zerock.org');
+insert into club_member_role_set (club_member_email, role_set) values('user@zerock.org', 2);
+
