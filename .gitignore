@@ -10,6 +10,7 @@ generated
 application-test*.yml
 application-local*.yml
 application-real-*.yml
+application-oauth*.yml
 
 /src/test/resources/upload/image/
 

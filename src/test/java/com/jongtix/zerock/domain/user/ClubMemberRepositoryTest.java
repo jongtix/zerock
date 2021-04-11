@@ -92,4 +92,38 @@ class ClubMemberRepositoryTest {
         assertThat(clubMemberList.get(0).getRoleSet().size()).isEqualTo(1);
     }
 
+    @DisplayName("다중_권한_ClubMember_저장_테스트")
+    @Transactional
+    @Test
+    void insertMemberWithMultiRole() {
+        //given
+        String email = "user@zerock.org";
+        String name = "name";
+        String password = passwordEncoder.encode("password");
+        boolean fromSocial = false;
+
+        ClubMember clubMember = ClubMember.builder()
+                .email(email)
+                .name(name)
+                .password(password)
+                .fromSocial(fromSocial)
+                .build();
+
+        clubMember.addMemberRole(Role.USER);
+        clubMember.addMemberRole(Role.ADMIN);
+        clubMember.addMemberRole(Role.MANAGER);
+
+        //when
+        clubMemberRepository.save(clubMember);
+        List<ClubMember> clubMemberList = clubMemberRepository.findAll();
+
+        //then
+        assertThat(clubMemberList.size()).isEqualTo(1);
+        assertThat(clubMemberList.get(0).getEmail()).isEqualTo(email);
+        assertThat(clubMemberList.get(0).getName()).isEqualTo(name);
+        assertThat(clubMemberList.get(0).getPassword()).isEqualTo(password);
+        assertThat(clubMemberList.get(0).isFromSocial()).isEqualTo(fromSocial);
+        assertThat(clubMemberList.get(0).getRoleSet().size()).isEqualTo(3);
+    }
+
 }

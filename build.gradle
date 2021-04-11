@@ -44,6 +44,8 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'	//Spring Security 의존성 추가
 	implementation group: 'org.springframework.security', name: 'spring-security-test'	//Spring Security 의존성 추가
 
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'	//OAuth 관련 의존성 추가
+
 	//Querydsl 추가 -start
 	implementation 'com.querydsl:querydsl-jpa'	//Querydsl 추가
 	implementation 'com.querydsl:querydsl-core'

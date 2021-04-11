@@ -7,8 +7,8 @@ spring:
 
   profiles:
     group:
-      local: local, local-db
-      real: real, real-db
+      local: local, local-db, oauth
+      real: real, real-db, oauth
 
   mvc:
     hiddenmethod:

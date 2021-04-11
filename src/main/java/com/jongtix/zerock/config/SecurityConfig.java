@@ -1,10 +1,11 @@
 package com.jongtix.zerock.config;
 
 import com.jongtix.zerock.domain.user.Role;
+import com.jongtix.zerock.handler.ClubLoginSuccessHandler;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @Log4j2
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)   //어노테이션 기반의 접근 제한을 설정할 수 있도록 해주는 설정
+                                                                            //securedEnabled: 예전 버전의 @Secure 어노테이션이 사용 가능한지를 지정
+                                                                            //prePostEnabled: @PreAuthorize를 이용하기 위해 사용
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
@@ -35,9 +39,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {  //리소스 접근 제한
 //        super.configure(http);
-        http.authorizeRequests()
-                .antMatchers("/sample/all").permitAll() //모든 사용자에게 허용
-                .antMatchers("/sample/member").hasRole(Role.USER.getKey()); //USER 권한이 있는 사용자만 허용
+//        //AS-IS
+//        //@PreAuthorize적용 전
+//        http.authorizeRequests()
+//                .antMatchers("/sample/all").permitAll() //모든 사용자에게 허용
+//                .antMatchers("/sample/member").hasRole(Role.USER.getKey()); //USER 권한이 있는 사용자만 허용
 
         http
                 .formLogin()   //인가/인증에 문제가 발생하면 로그인 화면으로
@@ -47,7 +53,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .failureUrl()
         ;
 
-        http.csrf().disable();  //외부에서 REST 방식으로 이용할 수 있는 보안 설정을 다루기 위해 CSRF 토큰을 발행하지 않음
+        http
+                .csrf().disable();  //외부에서 REST 방식으로 이용할 수 있는 보안 설정을 다루기 위해 CSRF 토큰을 발행하지 않음
+
+        http
+                .oauth2Login()
+                .successHandler(successHandler())   //oauth2 로그인 성공 이후 수행되는 handler 설정
+        ;
+
+        http
+                .rememberMe()   //Remember Me 설정 추가
+                .tokenValiditySeconds(60 * 60 * 24 * 7)  //7일 유지
+                .userDetailsService(userDetailsService())
+                ;
 
         http
                 .logout()   //((주의)) csrf 토큰을 사용할 때는 반드시 POST 방식으로만 로그아웃을 처리해야 함, 그렇지 않으면 form 태그와 버튼으로 구성된 화면이 노출
@@ -56,5 +74,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .invalidateHttpSession()
 //                .deleteCookies()
         ;
+    }
+
+    @Bean
+    public ClubLoginSuccessHandler successHandler() {
+        return new ClubLoginSuccessHandler(passwordEncoder());
     }
 }
