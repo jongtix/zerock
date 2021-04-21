@@ -1,6 +1,9 @@
 package com.jongtix.zerock.config;
 
 import com.jongtix.zerock.domain.user.Role;
+import com.jongtix.zerock.filter.ApiCheckFilter;
+import com.jongtix.zerock.filter.ApiLoginFilter;
+import com.jongtix.zerock.handler.ApiLoginFailHandler;
 import com.jongtix.zerock.handler.ClubLoginSuccessHandler;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @Log4j2
@@ -17,6 +21,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
                                                                             //securedEnabled: 예전 버전의 @Secure 어노테이션이 사용 가능한지를 지정
                                                                             //prePostEnabled: @PreAuthorize를 이용하기 위해 사용
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Bean
+    public ApiCheckFilter apiCheckFilter() {    //새롭게 작성된 API 필터를 스프링 빈으로 등록
+        return new ApiCheckFilter("/notes/**/*");
+    }
+
+    @Bean
+    public ApiLoginFilter apiLoginFilter() throws Exception {   //새롭게 작성된 로그인 필터를 스프링 빈으로 등록
+        ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/api/login");
+        apiLoginFilter.setAuthenticationManager(authenticationManager());   //AbstractAuthenticationProcessingFilter는 반드시 AuthenticationManager가 필요하므로 authenticationManager()를 이용해서 추가
+
+        apiLoginFilter.setAuthenticationFailureHandler(new ApiLoginFailHandler());
+
+        return apiLoginFilter;
+    }
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -66,6 +85,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenValiditySeconds(60 * 60 * 24 * 7)  //7일 유지
                 .userDetailsService(userDetailsService())
                 ;
+
+        http
+                .addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class) //UsernamePasswordAuthenticationFilter 이전에 ApiCheckFilter가 동작하도록 설정
+                .addFilterBefore(apiLoginFilter(), UsernamePasswordAuthenticationFilter.class) //UsernamePasswordAuthenticationFilter 이전에 ApiLoginFilter가 동작하도록 설정
+        ;
 
         http
                 .logout()   //((주의)) csrf 토큰을 사용할 때는 반드시 POST 방식으로만 로그아웃을 처리해야 함, 그렇지 않으면 form 태그와 버튼으로 구성된 화면이 노출
