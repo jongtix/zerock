@@ -46,6 +46,9 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'	//OAuth 관련 의존성 추가
 
+	//https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'	//JWT를 이용하기 위한 JJWT 의존성 설정
+
 	//Querydsl 추가 -start
 	implementation 'com.querydsl:querydsl-jpa'	//Querydsl 추가
 	implementation 'com.querydsl:querydsl-core'
