@@ -5,6 +5,7 @@ import com.jongtix.zerock.filter.ApiCheckFilter;
 import com.jongtix.zerock.filter.ApiLoginFilter;
 import com.jongtix.zerock.handler.ApiLoginFailHandler;
 import com.jongtix.zerock.handler.ClubLoginSuccessHandler;
+import com.jongtix.zerock.utils.JWTUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,14 +23,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
                                                                             //prePostEnabled: @PreAuthorize를 이용하기 위해 사용
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    //JWT 인증 추가
+    @Bean
+    public JWTUtil jwtUtil() {
+        return new JWTUtil();
+    }
+
     @Bean
     public ApiCheckFilter apiCheckFilter() {    //새롭게 작성된 API 필터를 스프링 빈으로 등록
-        return new ApiCheckFilter("/notes/**/*");
+        return new ApiCheckFilter("/notes/**/*", jwtUtil());
     }
 
     @Bean
     public ApiLoginFilter apiLoginFilter() throws Exception {   //새롭게 작성된 로그인 필터를 스프링 빈으로 등록
-        ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/api/login");
+        ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/api/login", jwtUtil());
         apiLoginFilter.setAuthenticationManager(authenticationManager());   //AbstractAuthenticationProcessingFilter는 반드시 AuthenticationManager가 필요하므로 authenticationManager()를 이용해서 추가
 
         apiLoginFilter.setAuthenticationFailureHandler(new ApiLoginFailHandler());

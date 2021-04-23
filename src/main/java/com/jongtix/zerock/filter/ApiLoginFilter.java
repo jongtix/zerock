@@ -1,5 +1,7 @@
 package com.jongtix.zerock.filter;
 
+import com.jongtix.zerock.dto.request.ClubAuthMemberRequestDto;
+import com.jongtix.zerock.utils.JWTUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 특정한 URL로 외부에서 로그인이 가능하도록 하고,
@@ -21,8 +24,11 @@ import java.io.IOException;
 @Log4j2
 public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    public ApiLoginFilter(String defaultFilterProcessesUrl) {
+    private JWTUtil jwtUtil;
+
+    public ApiLoginFilter(String defaultFilterProcessesUrl, JWTUtil jwtUtil) {
         super(defaultFilterProcessesUrl);
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -54,6 +60,23 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
         log.info("successfulAuthentication: " + authResult);    //성공한 사용자의 인증 정보를 가지고 있는 Authentication 객체
 
         log.info(authResult.getPrincipal());
+
+        //JWT 인증 추가
+        //email address
+        String email = ((ClubAuthMemberRequestDto) authResult.getPrincipal()).getUsername();
+
+        String token = null;
+
+        try {
+            token = jwtUtil.generateToken(email);
+
+            response.setContentType("text/plain");
+            response.getOutputStream().write(token.getBytes(StandardCharsets.UTF_8));
+
+            log.info(token);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

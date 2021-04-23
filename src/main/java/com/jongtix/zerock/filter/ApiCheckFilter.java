@@ -1,5 +1,6 @@
 package com.jongtix.zerock.filter;
 
+import com.jongtix.zerock.utils.JWTUtil;
 import lombok.extern.log4j.Log4j2;
 import net.minidev.json.JSONObject;
 import org.springframework.util.AntPathMatcher;
@@ -23,9 +24,17 @@ public class ApiCheckFilter extends OncePerRequestFilter {
 
     private String pattern;
 
+    private JWTUtil jwtUtil;
+
     public ApiCheckFilter(String pattern) {
         this.antPathMatcher = new AntPathMatcher();
         this.pattern = pattern;
+    }
+
+    public ApiCheckFilter(String pattern, JWTUtil jwtUtil) {
+        this.antPathMatcher = new AntPathMatcher();
+        this.pattern = pattern;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -64,10 +73,26 @@ public class ApiCheckFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        if (StringUtils.hasText(authHeader)) {
+//        //JWT 인증 적용 전(AS-IS)
+//        if (StringUtils.hasText(authHeader)) {
+//            log.info("Authorization exist: " + authHeader);
+//            if ("12345678".equals(authHeader)) {
+//                checkResult = true;
+//            }
+//        }
+
+        //JWT 인증 적용 후(TO-BE)
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
             log.info("Authorization exist: " + authHeader);
-            if ("12345678".equals(authHeader)) {
-                checkResult = true;
+
+            try {
+                String email = jwtUtil.validateAndExtract(authHeader.substring(7));
+
+                log.info("validate result: " + email);
+
+                checkResult = email.length() > 0;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
